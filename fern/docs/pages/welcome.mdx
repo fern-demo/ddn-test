@@ -32,6 +32,7 @@ git clone <your-template-repo.git>
 cd docs-starter
 ```
 
+
 </Step>
 
 <Step title="Install the Fern CLI">
@@ -81,6 +82,120 @@ fern generate --docs
 ```
 
 </Step>
+
+<Step title="Cross-reference">
+<Note>
+As realm admin, run the `redcli` commands in the following procedure from any healthy node in your cluster.
+</Note>
+
+<Anchor id="procedure">**Procedure**</Anchor>
+
+1. Determine the failed fan number using the following CLI command:
+
+    ```bash
+    redcli health event list -s CRITICAL
+    ```
+
+    The output of this command displays critical events, which include failed fans.
+
+    For example, the following output shows that `(SYS_FAN_1)` failed:
+
+    ```
+    2025-01-21 03:26:43.73 +0000 UTC │ CRITC │ memp-dh4-inf-cug-7 │ Sensor hmi/servers/ c804086d-aad1-4869-8d2d-bcdcf9460952/sensors/8(SYS_FAN_1) Reading(140 5) crossed LowerCritical Threshold(150)
+    ```
+
+    The number displayed in the event output corresponds to the number shown in [Motherboard Layout](#figure-motherboard-layout) in [step 6](#locate-failed-fan-step-6). 
+
+2. Put the instance with the failure into maintenance mode:
+   
+    a. List all resources of type instance in your cluster. In the output, a status of `present` indicates that the instance is not in maintenance. 
+   
+        ```bash
+        redcli instance list
+        ```
+   
+    b. Put the instance into maintenance by specifying its instance number or host name:
+   
+        ```bash
+        redcli instance maintenance enter -i <instance_id>
+        ```
+      
+        or
+      
+        ```bash
+        redcli instance maintenance enter -n <hostname>
+        ```
+   
+    c. List all resources of type instance in your cluster and verify that the status of the instance is `Maintenance`.
+   
+        ```bash
+        redcli instance list
+        ```
+
+3. If the server with the failed fan is still running, power off the server by specifying its host name.
+
+    ```bash
+    redcli server power -T <hostname> -a off
+    ```
+
+<Anchor id="disconnect-power-cords-step-4"></Anchor>
+4. Disconnect all power cords and cables. Ensure each cable is properly labeled to support correct reconnection in [step 11](#reconnect-power-cord-step-11).
+
+5. Pull the chassis from the rack and remove the top chassis cover, as follows:
+   
+    a. Use a screw driver to loosen the captive screw on the rear of the chassis [Loosen captive screw](#figure-loosen-captive-screw).
+   
+        <Anchor id="figure-loosen-captive-screw">**Loosen captive screw**</Anchor>
+
+        ![Loosen captive screw](../../../assets/ai2000-hw-guide/fan-replacement/Tyan_captivescrew.jpg)
+   
+    b. Slide the cover towards the back of the chassis, and then lift the rear top cover up, as shown in [Remove rear top cover](#figure-remove-rear-cover).
+   
+        <Anchor id="figure-remove-rear-cover">**Remove rear top cover**</Anchor>
+
+        ![Remove rear top cover](../../../assets/ai2000-hw-guide/fan-replacement/Tyan_rearcover.jpg)
+
+<Anchor id="locate-failed-fan-step-6"></Anchor> 
+6. Locate the failed fan using the fan number from step 1 and the [Motherboard Layout](#figure-motherboard-layout) diagram.
+
+    <Anchor id="figure-motherboard-layout">**Motherboard Layout**</Anchor>
+
+    ![Motherboard Layout](../../../assets/ai2000-hw-guide/fan-replacement/sensor_location.jpg)
+
+7. Physically remove the failed fan, as follows:
+   
+    a. Disconnect the fan cable from the motherboard header. 
+   
+    b. Lift the failed fan housing up and out of the chassis [Remove the failed fan](#figure-remove-failed-fan).
+   
+        <Anchor id="figure-remove-failed-fan">**Remove the failed fan**</Anchor>
+
+        ![Remove the failed fan](../../../assets/ai2000-hw-guide/fan-replacement/Tyan_removefan.jpg)
+
+8. Release the rubber screws and push pins from the failed fan, and then insert the same rubber screws and push pins on the replacement fan [Install rubber screws on replacement fan](#figure-install-rubber-screws).
+
+    <Anchor id="figure-install-rubber-screws">**Install rubber screws on replacement fan**</Anchor>
+
+    ![Install rubber screws on replacement fan](../../../assets/ai2000-hw-guide/fan-replacement/Tyan_rubberscrews.jpg)
+
+9. Physically install the replacement fan, as follows:
+   
+    a. Align the replacement fan with the vacant slot in the chassis.
+   
+    b. Carefully insert the fan housing into the slot until it clicks securely into place. Confirm the fan is secure and seated flush in the chassis.
+   
+    c. Reconnect the fan cables to the same fan headers on the motherboard, using the following precautions:
+       - Use care when inserting the fan connectors into the motherboard headers, as there are obstructions for some headers.
+       - Avoid bending pins on these connectors.
+       - Secure the cables using ties after fan replacement.
+
+10. Re-install the top chassis cover and push the chassis into the rack.
+
+<Anchor id="reconnect-power-cord-step-11"></Anchor>
+11. Reconnect the power cords and cables exactly as they were removed in [step 4](#disconnect-power-cords-step-4).
+
+</Step>
+
 </Steps>
 
 ## Next steps
