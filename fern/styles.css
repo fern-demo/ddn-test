@@ -1,0 +1,79 @@
+@layer ddn-custom {
+
+/* Nested ordered list styling */
+ol ol > li {
+  list-style-type: lower-alpha !important;
+}
+
+ol ol ol > li {
+  list-style-type: lower-roman !important;
+}
+
+.fern-step > ol > li {
+  list-style-type: lower-alpha !important;
+}
+
+.fern-step > ol ol > li {
+  list-style-type: lower-roman !important;
+}
+
+/* Nested unordered list styling */
+/* Override Fern's bullet content for each nesting level via --tw-content variable */
+
+/* Level 1: solid circle (default - no change needed) */
+article ul > li::before {
+  transform: scale(1.3) !important;
+}
+
+/* Level 2: open circle */
+article ul ul > li::before {
+  --tw-content: '∘' !important;
+  transform: scale(1.3) !important;
+}
+
+/* Level 3: solid square */
+article ul ul ul > li::before {
+  --tw-content: '▪' !important;
+  transform: scale(1.3) !important;
+}
+
+/* Level 4: open square */
+article ul ul ul ul > li::before {
+  --tw-content: '▫' !important;
+  transform: scale(1.5) !important;
+}
+
+/* Level 5: solid diamond */
+article ul ul ul ul ul > li::before {
+  --tw-content: '⬩' !important;
+  transform: scale(1.4) !important;
+}
+
+/* Level 6: open diamond */
+article ul ul ul ul ul ul > li::before {
+  --tw-content: '⬫' !important;
+  transform: scale(1.2) !important;
+}
+
+/* Inline icon styling for safety symbols and regulatory marks */
+.inline-icon,
+img.inline-icon {
+  display: inline-block;
+  height: 2.5em;
+  width: auto;
+  vertical-align: middle;
+  margin: 0 0.25rem;
+}
+
+/* Full-size variant */
+.inline-icon-full-size {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 0.35rem;
+}
+
+/* Right-aligned icon container */
+.right-align {
+  text-align: right;
+}
+}

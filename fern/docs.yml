@@ -10,6 +10,7 @@ layout:
   searchbar-placement: header
   page-width: full
   tabs-placement: header
+css: styles.css
 tabs:
   home:
     display-name: Docs
