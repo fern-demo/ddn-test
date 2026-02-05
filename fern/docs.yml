@@ -40,7 +40,7 @@ navigation:
             collapsed: true
             contents:
             - page: Test Section
-            - path: docs/pages/test-section.mdx
+              path: docs/pages/test-section.mdx
           - page: Support
             path: docs/pages/support.mdx
             icon: fa-duotone fa-headset
