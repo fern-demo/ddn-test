@@ -35,6 +35,9 @@ navigation:
           - page: Customize your docs
             path: docs/pages/customization.mdx
             icon: fa-duotone fa-palette
+          - page: Test Page
+            path: docs/pages/test-page.mdx
+            icon: fa-duotone fa-palette
           - page: Support
             path: docs/pages/support.mdx
             icon: fa-duotone fa-headset
