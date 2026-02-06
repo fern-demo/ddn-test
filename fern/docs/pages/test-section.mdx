@@ -2,4 +2,46 @@
 title: Test Section!
 ---
 
-This is exclusively created for practising Git workflow.
+This is exclusively created for practicing Git workflow.
+
+### Show the Dataset Profile Details
+
+As a subtenant admin, show the dataset profile for a data service using `redcli dataset profile show` and specifying the profile name:
+
+```bash
+redcli dataset profile show <profile_name>
+```
+
+<Card title="Example">
+   This example shows details for the `SYSTEM_DATA` profile.
+
+   ```none
+   $ redcli dataset profile show SYSTEM_DATA
+   9:03PM INF Auto Selecting cluster: c1uster-gray
+   9:03PM INF Auto Selected config: auto_config
+
+   ┌────┬─────────────┬─────────────┬───────────┬────────────┬───────────┬────────────┬────────────┬──────────────┬───────────┬───────────┐
+   │ ID │    NAME     │ Metapool ID │ Meta LTID │ Datapool ID│ Data LTID │ Efficiency │ Protection │ Availability │ MinStripe │ MaxStripe │
+   ├────┼─────────────┼─────────────┼───────────┼────────────┼───────────┼────────────┼────────────┼──────────────┼───────────┼───────────┤
+   │  1 │ SYSTEM_DATA │      1      │     2     │      1     │     3     │     87     │     11     │       8      │   32768   │   262144  │
+   └────┴─────────────┴─────────────┴───────────┴────────────┴───────────┴────────────┴────────────┴──────────────┴───────────┴───────────┘
+   ```
+</Card>
+
+The Dataset Profile Details table below describes the fields provided in the command output.
+
+**Dataset Profile Details Table**
+
+Field| Description
+---|---
+ID| Identifier of the profile whose details are shown
+Name| Name of profile
+Metapool ID| Identifier of the pool on which metadata will be stored
+Meta LTID| Identifier of the profile to be used on the metadata
+Datapool ID| Identifier of the pool on which data will be stored
+Data LTID| Identifier of the profile to be used on the data
+Efficiency| Default maximum efficiency of the Erasure Parity Schema
+Protection| Level of data endurance
+Availability| Which failure data will survive, for example, device, instance, rack, or site
+MinStripe| Minimum data targeted per device - 32768 bytes
+MaxStripe| Maximum data targeted per device in bytes
