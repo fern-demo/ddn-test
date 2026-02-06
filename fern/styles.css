@@ -15,6 +15,8 @@
       Increasing the letter spacing also fixes the issue of the box characters overlapping, but makes the text look too spread out. */
    /* font-family: 'Courier New', Courier, monospace !important; */
    /* letter-spacing: 0.15em !important; */
+   white-space: pre !important;
+   overflow-x: auto !important;
 }
 
 /* Nested ordered list styling */
