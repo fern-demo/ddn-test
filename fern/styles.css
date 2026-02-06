@@ -1,7 +1,23 @@
 @layer ddn-custom {
 
-/* Nested ordered list styling */
+/* Page content padding */
+.fern-layout-guide {
+   --page-padding: 80px !important;
+}
 
+/* Code block line height to prevent box characters from having vertical gaps */
+/* The language-none class is added by Fern when "none" is specified for a code block. */
+/* By convention, we should always use "none" for CLI output that contains box characters and tables. */
+.language-none .code-block {
+   line-height: 18px !important;
+   /* The font specified by Fern seems to be defaulting to Menlo on Mac, which makes the box characters overlap slightly horizontally.
+      Changing the font to Courier fixes the issue, but Courier doesn't look as good. One day we should try to find a better font.
+      Increasing the letter spacing also fixes the issue of the box characters overlapping, but makes the text look too spread out. */
+   /* font-family: 'Courier New', Courier, monospace !important; */
+   /* letter-spacing: 0.15em !important; */
+}
+
+/* Nested ordered list styling */
 
 ol ol > li {
   list-style-type: lower-alpha !important;
