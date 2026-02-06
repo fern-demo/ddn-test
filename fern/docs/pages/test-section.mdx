@@ -45,3 +45,29 @@ Protection| Level of data endurance
 Availability| Which failure data will survive, for example, device, instance, rack, or site
 MinStripe| Minimum data targeted per device - 32768 bytes
 MaxStripe| Maximum data targeted per device in bytes
+
+## Show Details of a Tenant
+
+As a realm or tenant admin, show details of a single tenant using `redcli tenant show` and specifying the name of the tenant. Note that tenant admins can show details of their own tenant only.
+
+```bash
+redcli tenant show <tenant_name> [flags]
+```
+
+<Card title="Example">
+   This example shows details for the `red` tenant.
+
+   ```none
+   $ redcli tenant show red
+   5:51PM INF Auto Selecting cluster: cluster-gray
+
+   ┌──────┬────┬────────────────────┬────────────────┬────────────────────┬─────────────┬───────────────┬──────────────┐
+   │ NAME │ ID │ ALLOCATED CAPACITY │     USAGE      │ PROVISIONING RATIO │ IO PRIORITY │ PRIMARY ADMIN │    XATTRS    │
+   │      │    │                    │                │                    │             │               ├──────┬───────┤
+   │      │    │                    │                │                    │             │               │ KEY  │ VALUE │
+   ├──────┼────┼────────────────────┼────────────────┼────────────────────┼─────────────┼───────────────┼──────┼───────┤
+   │ red  │ 17 │       250 GB       │ 32.21 GB (13%) │        2.40        │    medium   │   DDNtenant1  │  --  │  --   │
+   └──────┴────┴────────────────────┴────────────────┴────────────────────┴─────────────┴───────────────┴──────┴───────┘
+   ```
+</Card>
+
