@@ -45,14 +45,6 @@ navigation:
       - section: Changelog
         contents:
           - changelog: docs/changelog
-  - tab: docs
-    layout:
-      - section: Get started
-        contents:
-          - section: Test Page
-            contents:
-              - page: Callout Trial
-                path: ./docs/pages/test-page/callout-trial.mdx
 navbar-links:
   - type: minimal
     text: Fork this repo
