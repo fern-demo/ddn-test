@@ -34,11 +34,11 @@ navigation:
             path: docs/pages/customization.mdx
             icon: fa-duotone fa-palette
           - section: Test Page
-            path: docs/pages/test-page.mdx
+            path: docs/pages/test-page/test-page.mdx
             collapsed: true
             contents:
               - page: Test Section
-                path: docs/pages/test-section.mdx
+                path: docs/pages/test-page/test-section.mdx
           - page: Support
             path: docs/pages/support.mdx
             icon: fa-duotone fa-headset
