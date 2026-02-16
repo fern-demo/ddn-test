@@ -96,4 +96,27 @@ img.inline-icon {
 .right-align {
   text-align: right;
 }
+
+/* Styles to highlight changes */
+.addition {
+   background-color: #d4f4dd;
+   border-left: 4px solid #22863a;
+   padding: 0px 4px 0px 8px;
+}
+
+.deletion {
+   background-color: #ffeef0;
+   border-left: 4px solid #d73a49;
+   padding: 0px 4px 0px 8px;
+   text-decoration: line-through;
+   text-decoration-color: rgba(215, 58, 73, 0.4);
+   color: rgba(0, 0, 0, 0.7);
+}
+
+.change {
+   background-color: #f3e8ff;
+   border-left: 4px solid #8b5cf6;
+   padding: 0px 4px 0px 8px;
+}
+
 }

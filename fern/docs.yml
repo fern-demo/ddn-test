@@ -1,5 +1,3 @@
-# yaml-language-server: $schema=https://schema.buildwithfern.dev/docs-yml.json
-
 instances:
   - url: ddn-test.docs.buildwithfern.com
 ai-search:
@@ -39,8 +37,8 @@ navigation:
             path: docs/pages/test-page.mdx
             collapsed: true
             contents:
-            - page: Test Section
-              path: docs/pages/test-section.mdx
+              - page: Test Section
+                path: docs/pages/test-section.mdx
           - page: Support
             path: docs/pages/support.mdx
             icon: fa-duotone fa-headset
@@ -58,8 +56,8 @@ navbar-links:
     value: https://github.com/fern-api/fern
 colors:
   accentPrimary:
-    dark: "#c01d2e"
-    light: "#c01d2e"
+    dark: '#c01d2e'
+    light: '#c01d2e'
 theme:
   page-actions: toolbar
   footer-nav: minimal
