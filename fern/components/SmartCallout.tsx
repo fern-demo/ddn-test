@@ -1,4 +1,4 @@
-import { Note, Tip, Warning, Danger } from "fern-docs/components";
+
 
 export const SmartCallout = ({ type = "note", children }) => {
   const map = {
