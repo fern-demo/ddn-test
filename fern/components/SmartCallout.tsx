@@ -1,13 +1,20 @@
+import React from 'react';
 
+const Callout = ({ title, children }: { title: string; children: React.ReactNode }) => (
+  <div className="callout">
+    <strong>{title}</strong>
+    {children}
+  </div>
+);
 
-export const SmartCallout = ({ type = "note", children }) => {
+export const SmartCallout = ({ type = "note", children }: { type?: "note" | "tip" | "warning" | "danger"; children: React.ReactNode }) => {
   const map = {
-    note: { C: Note, title: "Note" },
-    tip: { C: Tip, title: "Tip" },
-    warning: { C: Warning, title: "Warning" },
-    danger: { C: Danger, title: "Important" }
+    note: { title: "Note" },
+    tip: { title: "Tip" },
+    warning: { title: "Warning" },
+    danger: { title: "Important" }
   };
 
-  const { C, title } = map[type] ?? map.note;
-  return <C title={title}>{children}</C>;
+  const { title } = map[type] ?? map.note;
+  return <Callout title={title}>{children}</Callout>;
 };
