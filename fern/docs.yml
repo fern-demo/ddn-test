@@ -70,4 +70,4 @@ footer: ./components/CustomFooter.tsx
 experimental:
   mdx-components:
     - ./components
-
+    - ./components/SmartCallout.tsx
