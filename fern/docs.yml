@@ -42,10 +42,6 @@ navigation:
           - page: Support
             path: docs/pages/support.mdx
             icon: fa-duotone fa-headset
-          - section: Adding Section
-            contents:
-              - page: Adding Page
-                path: ./docs/pages/docs/get-started/adding-section/adding-page.mdx
       - section: Changelog
         contents:
           - changelog: docs/changelog
