@@ -42,6 +42,10 @@ navigation:
           - page: Support
             path: docs/pages/support.mdx
             icon: fa-duotone fa-headset
+          - section: Adding Section
+            contents:
+              - page: Second Trial Page
+                path: ./docs/pages/adding-section/second-trial-page.mdx
       - section: Changelog
         contents:
           - changelog: docs/changelog
