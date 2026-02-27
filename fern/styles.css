@@ -1,9 +1,20 @@
 @layer ddn-custom {
 
-/* Page content padding */
+
+
+/* ====================================================
+   STYLES ADDED BY DDN
+   ==================================================== */
+
+
+/* ===== Page content padding ===== */
+
+/* Page width is defined in docs.yml */
 .fern-layout-guide {
    --page-padding: 80px !important;
 }
+
+/* ===== Code block styling ===== */
 
 /* Code block line height to prevent box characters from having vertical gaps */
 /* The language-none class is added by Fern when "none" is specified for a code block. */
@@ -15,11 +26,32 @@
       Increasing the letter spacing also fixes the issue of the box characters overlapping, but makes the text look too spread out. */
    /* font-family: 'Courier New', Courier, monospace !important; */
    /* letter-spacing: 0.15em !important; */
-   white-space: pre !important;
-   overflow-x: auto !important;
 }
 
-/* Nested ordered list styling */
+/* ===== Styles to highlight changes ===== */
+
+.addition {
+   background-color: #d4f4dd;
+   border-left: 4px solid #22863a;
+   padding: 0px 4px 0px 8px;
+}
+
+.deletion {
+   background-color: #ffeef0;
+   border-left: 4px solid #d73a49;
+   padding: 0px 4px 0px 8px;
+   text-decoration: line-through;
+   text-decoration-color: rgba(215, 58, 73, 0.4);
+   color: rgba(0, 0, 0, 0.7);
+}
+
+.change {
+   background-color: #f3e8ff;
+   border-left: 4px solid #8b5cf6;
+   padding: 0px 4px 0px 8px;
+}
+
+/* ===== Nested ordered list styling ===== */
 
 ol ol > li {
   list-style-type: lower-alpha !important;
@@ -37,7 +69,8 @@ ol ol ol > li {
   list-style-type: lower-roman !important;
 }
 
-/* Nested unordered list styling */
+/* ===== Nested unordered list styling ===== */
+
 /* Override Fern's bullet content for each nesting level via --tw-content variable */
 
 /* Level 1: solid circle (default - no change needed) */
@@ -75,7 +108,85 @@ article ul ul ul ul ul ul > li::before {
   transform: scale(1.2) !important;
 }
 
-/* Inline icon styling for safety symbols and regulatory marks */
+/* ===== Fern Callout Auto-Titles ===== */
+
+/* Automatically insert title text for callouts without explicit titles */
+/* Based on data-intent attribute used by Fern */
+
+/* Note callouts */
+.fern-callout[data-intent="note"] h5:empty::before {
+  content: "Note";
+}
+
+/* Info callouts - styled as "Important Info" with purple theme (see below) */
+.fern-callout[data-intent="info"] h5:empty::before {
+  content: "Important Info";
+}
+
+/* Warning callouts */
+.fern-callout[data-intent="warning"] h5:empty::before {
+  content: "Warning";
+}
+
+/* Error callouts */
+.fern-callout[data-intent="error"] h5:empty::before {
+  content: "Error";
+}
+
+/* Success callouts */
+.fern-callout[data-intent="success"] h5:empty::before {
+  content: "Success";
+}
+
+/* Tip callouts */
+.fern-callout[data-intent="tip"] h5:empty::before {
+  content: "Tip";
+}
+
+/* Check callouts */
+.fern-callout[data-intent="check"] h5:empty::before {
+  content: "Check";
+}
+
+/* Launch callouts */
+.fern-callout[data-intent="launch"] h5:empty::before {
+  content: "Launch";
+}
+
+/* Ensure the generated content is visible and styled appropriately */
+.fern-callout h5:empty::before {
+  display: inline-block;
+  font-weight: 600;
+}
+
+/* Prevent empty h5 from collapsing - ensure it displays */
+.fern-callout h5:empty {
+  min-height: 1.5em;
+  display: block;
+}
+
+/* ===== Custom Info Callout Styling (Purple "Important" Theme) ===== */
+/* Override default Info callout colors with purple theme for "Important" information */
+.fern-callout[data-intent="info"] {
+  background-color: rgba(138, 43, 226, 0.05) !important;
+  border-color: rgba(138, 43, 226, 0.35) !important;
+  color: rgba(75, 0, 130, 0.9) !important;
+}
+
+/* Ensure text within Info callout inherits the purple color */
+.fern-callout[data-intent="info"] p,
+.fern-callout[data-intent="info"] li,
+.fern-callout[data-intent="info"] span {
+  color: rgba(75, 0, 130, 0.9) !important;
+}
+
+/* Style the icon color for Info callout */
+.fern-callout[data-intent="info"] svg {
+  color: rgba(138, 43, 226, 0.8) !important;
+}
+
+/* ===== Inline icon styling for safety symbols and regulatory marks ===== */
+
 .inline-icon,
 img.inline-icon {
   display: inline-block;
@@ -96,27 +207,4 @@ img.inline-icon {
 .right-align {
   text-align: right;
 }
-
-/* Styles to highlight changes */
-.addition {
-   background-color: #d4f4dd;
-   border-left: 4px solid #22863a;
-   padding: 0px 4px 0px 8px;
-}
-
-.deletion {
-   background-color: #ffeef0;
-   border-left: 4px solid #d73a49;
-   padding: 0px 4px 0px 8px;
-   text-decoration: line-through;
-   text-decoration-color: rgba(215, 58, 73, 0.4);
-   color: rgba(0, 0, 0, 0.7);
-}
-
-.change {
-   background-color: #f3e8ff;
-   border-left: 4px solid #8b5cf6;
-   padding: 0px 4px 0px 8px;
-}
-
 }
