@@ -1,210 +1,237 @@
-@layer ddn-custom {
+@layer ddn-custom 
+{
 
 
+   /* ====================================================
+      STYLES ADDED BY DDN
+      ==================================================== */
 
-/* ====================================================
-   STYLES ADDED BY DDN
-   ==================================================== */
+
+   /* ===== Page content padding ===== */
+
+   /* Page width is defined in docs.yml */
+   .fern-layout-guide {
+      --page-padding: 80px !important;
+   }
+
+   /* ===== Code block styling ===== */
+
+   /* Code block line height to prevent box characters from having vertical gaps */
+   /* The language-none class is added by Fern when "none" is specified for a code block. */
+   /* By convention, we should always use "none" for CLI output that contains box characters and tables. */
+   .language-none .code-block {
+      line-height: 18px !important;
+      /* The font specified by Fern seems to be defaulting to Menlo on Mac, which makes the box characters overlap slightly horizontally.
+         Changing the font to Courier fixes the issue, but Courier doesn't look as good. One day we should try to find a better font.
+         Increasing the letter spacing also fixes the issue of the box characters overlapping, but makes the text look too spread out. */
+      /* font-family: 'Courier New', Courier, monospace !important; */
+      /* letter-spacing: 0.15em !important; */
+   }
+
+   /* ===== Styles to highlight changes ===== */
+
+   .addition {
+      background-color: #d4f4dd;
+      border-left: 4px solid #22863a;
+      padding: 0px 4px 0px 8px;
+   }
+
+   .deletion {
+      background-color: #ffeef0;
+      border-left: 4px solid #d73a49;
+      padding: 0px 4px 0px 8px;
+      text-decoration: line-through;
+      text-decoration-color: rgba(215, 58, 73, 0.4);
+      color: rgba(0, 0, 0, 0.7);
+   }
+
+   .change {
+      background-color: #f3e8ff;
+      border-left: 4px solid #8b5cf6;
+      padding: 0px 4px 0px 8px;
+   }
+
+   /* ===== Nested ordered list styling ===== */
+
+   ol ol > li {
+   list-style-type: lower-alpha !important;
+   }
+
+   ol ol ol > li {
+   list-style-type: lower-roman !important;
+   }
+
+   .fern-step > ol > li {
+   list-style-type: lower-alpha !important;
+   }
+
+   .fern-step > ol ol > li {
+   list-style-type: lower-roman !important;
+   }
+
+   /* ===== Nested unordered list styling ===== */
+
+   /* Override Fern's bullet content for each nesting level via --tw-content variable */
+
+   /* Level 1: solid circle (default - no change needed) */
+   article ul > li::before {
+   transform: scale(1.3) !important;
+   }
+
+   /* Level 2: open circle */
+   article ul ul > li::before {
+   --tw-content: '∘' !important;
+   transform: scale(1.3) !important;
+   }
+
+   /* Level 3: solid square */
+   article ul ul ul > li::before {
+   --tw-content: '▪' !important;
+   transform: scale(1.3) !important;
+   }
+
+   /* Level 4: open square */
+   article ul ul ul ul > li::before {
+   --tw-content: '▫' !important;
+   transform: scale(1.5) !important;
+   }
+
+   /* Level 5: solid diamond */
+   article ul ul ul ul ul > li::before {
+   --tw-content: '⬩' !important;
+   transform: scale(1.4) !important;
+   }
+
+   /* Level 6: open diamond */
+   article ul ul ul ul ul ul > li::before {
+   --tw-content: '⬫' !important;
+   transform: scale(1.2) !important;
+   }
+
+   /* ===== Fern Callout Auto-Titles ===== */
+
+   /* Automatically insert title text for callouts without explicit titles */
+   /* Based on data-intent attribute used by Fern */
+
+   /* Note callouts */
+   .fern-callout[data-intent="note"] h5:empty::before {
+   content: "Note";
+   }
+
+   /* Info callouts - styled as "Important Info" with purple theme (see below) */
+   .fern-callout[data-intent="info"] h5:empty::before {
+   content: "Important";
+   }
+
+   /* Warning callouts */
+   .fern-callout[data-intent="warning"] h5:empty::before {
+   content: "Warning";
+   }
+
+   /* Error callouts */
+   .fern-callout[data-intent="error"] h5:empty::before {
+   content: "Error";
+   }
+
+   /* Success callouts */
+   .fern-callout[data-intent="success"] h5:empty::before {
+   content: "Success";
+   }
+
+   /* Tip callouts */
+   .fern-callout[data-intent="tip"] h5:empty::before {
+   content: "Tip";
+   }
+
+   /* Check callouts */
+   .fern-callout[data-intent="check"] h5:empty::before {
+   content: "Check";
+   }
+
+   /* Launch callouts */
+   .fern-callout[data-intent="launch"] h5:empty::before {
+   content: "Launch";
+   }
+
+   /* Ensure the generated content is visible and styled appropriately */
+   .fern-callout h5:empty::before {
+   display: inline-block;
+   font-weight: 600;
+   }
+
+   /* Prevent empty h5 from collapsing - ensure it displays */
+   .fern-callout h5:empty {
+   min-height: 1.5em;
+   display: block;
+   }
+
+   /* ===== Custom Info Callout Styling (Purple "Important" Theme) ===== */
+   /* Define purple color variables that adapt to light/dark mode */
+   :root {
+   /* Light mode purple colors for Info/Important callout */
+   --purple-a2: rgba(138, 43, 226, 0.05);
+   --purple-a6: rgba(138, 43, 226, 0.35);
+   --purple-a11: rgba(75, 0, 130, 0.9);
+   }
+
+   /* Dark mode purple colors */
+   html.dark,
+   html[style*="color-scheme: dark"] {
+   --purple-a2: rgba(186, 85, 211, 0.094);
+   --purple-a6: rgba(186, 85, 211, 0.498);
+   --purple-a11: rgb(216, 180, 254);
+   }
+
+   /* Fallback for system dark mode preference */
+   @media (prefers-color-scheme: dark) {
+   :root:not(.light) {
+      --purple-a2: rgba(186, 85, 211, 0.094);
+      --purple-a6: rgba(186, 85, 211, 0.498);
+      --purple-a11: rgb(216, 180, 254);
+   }
+   }
+
+   /* Override default Info callout colors with purple theme for "Important" information */
+   .fern-callout[data-intent="info"] {
+   background-color: var(--purple-a2) !important;
+   border-color: var(--purple-a6) !important;
+   color: var(--purple-a11) !important;
+   }
+
+   /* Ensure text within Info callout inherits the purple color */
+   .fern-callout[data-intent="info"] p,
+   .fern-callout[data-intent="info"] li,
+   .fern-callout[data-intent="info"] span {
+   color: var(--purple-a11) !important;
+   }
+
+   /* Style the icon color for Info callout */
+   .fern-callout[data-intent="info"] svg {
+   color: var(--purple-a11) !important;
+   opacity: 0.8;
+   }
 
 
-/* ===== Page content padding ===== */
+   /* ===== Inline icon styling for safety symbols and regulatory marks ===== */
 
-/* Page width is defined in docs.yml */
-.fern-layout-guide {
-   --page-padding: 80px !important;
-}
+   .inline-icon,
+   img.inline-icon {
+   display: inline-block;
+   height: 2.5em;
+   width: auto;
+   vertical-align: middle;
+   margin: 0 0.25rem;
+   }
 
-/* ===== Code block styling ===== */
+   /* Full-size variant */
+   .inline-icon-full-size {
+   display: inline-block;
+   vertical-align: middle;
+   margin: 0 0.35rem;
+   }
 
-/* Code block line height to prevent box characters from having vertical gaps */
-/* The language-none class is added by Fern when "none" is specified for a code block. */
-/* By convention, we should always use "none" for CLI output that contains box characters and tables. */
-.language-none .code-block {
-   line-height: 18px !important;
-   /* The font specified by Fern seems to be defaulting to Menlo on Mac, which makes the box characters overlap slightly horizontally.
-      Changing the font to Courier fixes the issue, but Courier doesn't look as good. One day we should try to find a better font.
-      Increasing the letter spacing also fixes the issue of the box characters overlapping, but makes the text look too spread out. */
-   /* font-family: 'Courier New', Courier, monospace !important; */
-   /* letter-spacing: 0.15em !important; */
-}
-
-/* ===== Styles to highlight changes ===== */
-
-.addition {
-   background-color: #d4f4dd;
-   border-left: 4px solid #22863a;
-   padding: 0px 4px 0px 8px;
-}
-
-.deletion {
-   background-color: #ffeef0;
-   border-left: 4px solid #d73a49;
-   padding: 0px 4px 0px 8px;
-   text-decoration: line-through;
-   text-decoration-color: rgba(215, 58, 73, 0.4);
-   color: rgba(0, 0, 0, 0.7);
-}
-
-.change {
-   background-color: #f3e8ff;
-   border-left: 4px solid #8b5cf6;
-   padding: 0px 4px 0px 8px;
-}
-
-/* ===== Nested ordered list styling ===== */
-
-ol ol > li {
-  list-style-type: lower-alpha !important;
-}
-
-ol ol ol > li {
-  list-style-type: lower-roman !important;
-}
-
-.fern-step > ol > li {
-  list-style-type: lower-alpha !important;
-}
-
-.fern-step > ol ol > li {
-  list-style-type: lower-roman !important;
-}
-
-/* ===== Nested unordered list styling ===== */
-
-/* Override Fern's bullet content for each nesting level via --tw-content variable */
-
-/* Level 1: solid circle (default - no change needed) */
-article ul > li::before {
-  transform: scale(1.3) !important;
-}
-
-/* Level 2: open circle */
-article ul ul > li::before {
-  --tw-content: '∘' !important;
-  transform: scale(1.3) !important;
-}
-
-/* Level 3: solid square */
-article ul ul ul > li::before {
-  --tw-content: '▪' !important;
-  transform: scale(1.3) !important;
-}
-
-/* Level 4: open square */
-article ul ul ul ul > li::before {
-  --tw-content: '▫' !important;
-  transform: scale(1.5) !important;
-}
-
-/* Level 5: solid diamond */
-article ul ul ul ul ul > li::before {
-  --tw-content: '⬩' !important;
-  transform: scale(1.4) !important;
-}
-
-/* Level 6: open diamond */
-article ul ul ul ul ul ul > li::before {
-  --tw-content: '⬫' !important;
-  transform: scale(1.2) !important;
-}
-
-/* ===== Fern Callout Auto-Titles ===== */
-
-/* Automatically insert title text for callouts without explicit titles */
-/* Based on data-intent attribute used by Fern */
-
-/* Note callouts */
-.fern-callout[data-intent="note"] h5:empty::before {
-  content: "Note";
-}
-
-/* Info callouts - styled as "Important Info" with purple theme (see below) */
-.fern-callout[data-intent="info"] h5:empty::before {
-  content: "Important Info";
-}
-
-/* Warning callouts */
-.fern-callout[data-intent="warning"] h5:empty::before {
-  content: "Warning";
-}
-
-/* Error callouts */
-.fern-callout[data-intent="error"] h5:empty::before {
-  content: "Error";
-}
-
-/* Success callouts */
-.fern-callout[data-intent="success"] h5:empty::before {
-  content: "Success";
-}
-
-/* Tip callouts */
-.fern-callout[data-intent="tip"] h5:empty::before {
-  content: "Tip";
-}
-
-/* Check callouts */
-.fern-callout[data-intent="check"] h5:empty::before {
-  content: "Check";
-}
-
-/* Launch callouts */
-.fern-callout[data-intent="launch"] h5:empty::before {
-  content: "Launch";
-}
-
-/* Ensure the generated content is visible and styled appropriately */
-.fern-callout h5:empty::before {
-  display: inline-block;
-  font-weight: 600;
-}
-
-/* Prevent empty h5 from collapsing - ensure it displays */
-.fern-callout h5:empty {
-  min-height: 1.5em;
-  display: block;
-}
-
-/* ===== Custom Info Callout Styling (Purple "Important" Theme) ===== */
-/* Override default Info callout colors with purple theme for "Important" information */
-.fern-callout[data-intent="info"] {
-  background-color: rgba(138, 43, 226, 0.05) !important;
-  border-color: rgba(138, 43, 226, 0.35) !important;
-  color: rgba(75, 0, 130, 0.9) !important;
-}
-
-/* Ensure text within Info callout inherits the purple color */
-.fern-callout[data-intent="info"] p,
-.fern-callout[data-intent="info"] li,
-.fern-callout[data-intent="info"] span {
-  color: rgba(75, 0, 130, 0.9) !important;
-}
-
-/* Style the icon color for Info callout */
-.fern-callout[data-intent="info"] svg {
-  color: rgba(138, 43, 226, 0.8) !important;
-}
-
-/* ===== Inline icon styling for safety symbols and regulatory marks ===== */
-
-.inline-icon,
-img.inline-icon {
-  display: inline-block;
-  height: 2.5em;
-  width: auto;
-  vertical-align: middle;
-  margin: 0 0.25rem;
-}
-
-/* Full-size variant */
-.inline-icon-full-size {
-  display: inline-block;
-  vertical-align: middle;
-  margin: 0 0.35rem;
-}
-
-/* Right-aligned icon container */
-.right-align {
-  text-align: right;
-}
+   /* Right-aligned icon container */
+   .right-align {
+   text-align: right;
+   }
 }
