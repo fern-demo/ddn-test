@@ -42,6 +42,10 @@ navigation:
           - page: Support
             path: docs/pages/support.mdx
             icon: fa-duotone fa-headset
+          - section: Demo Section
+            contents:
+              - page: Demo Page
+                path: ./docs/pages/docs/get-started/demo-section/demo-page.mdx
       - section: Changelog
         contents:
           - changelog: docs/changelog
