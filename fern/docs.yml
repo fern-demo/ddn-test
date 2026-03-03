@@ -39,6 +39,8 @@ navigation:
             contents:
               - page: Test Section
                 path: docs/pages/test-page/test-section.mdx
+              - page: Test Table
+                path: docs/pages/test-page/test-table.mdx
           - page: Support
             path: docs/pages/support.mdx
             icon: fa-duotone fa-headset

@@ -211,6 +211,15 @@
    opacity: 0.8;
    }
 
+   /* ===== ListTable caption styling ===== */
+
+   .list-table-caption {
+   font-size: 1rem;
+   font-weight: 600;
+   margin-bottom: 0.75rem;
+   margin-top: 1rem;
+   color: var(--grayscale-a11, #1a1a1a);
+   }
 
    /* ===== Inline icon styling for safety symbols and regulatory marks ===== */
 

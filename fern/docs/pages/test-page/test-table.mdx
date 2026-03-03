@@ -1,0 +1,280 @@
+---
+title: ListTable Component Test
+---
+
+import { ListTable } from '@/components/ListTable';
+
+This page demonstrates the capabilities of the ListTable component with various features.
+
+## Basic Table with Caption
+
+<ListTable headerRows={1} caption="Basic Feature Comparison">
+* - Feature
+  - Status
+  - Notes
+* - Authentication
+  - ✅ Supported
+  - Full OAuth2 support
+* - Monitoring
+  - ✅ Supported
+  - Real-time metrics
+* - Backup
+  - 🚧 In Progress
+  - Coming in Q2 2026
+</ListTable>
+
+MDX source:
+
+```jsx
+<ListTable headerRows={1} caption="Basic Feature Comparison">
+* - Feature
+  - Status
+  - Notes
+* - Authentication
+  - ✅ Supported
+  - Full OAuth2 support
+* - Monitoring
+  - ✅ Supported
+  - Real-time metrics
+* - Backup
+  - 🚧 In Progress
+  - Coming in Q2 2026
+</ListTable>
+```
+
+## Table with Header Columns
+
+<ListTable headerRows={1} headerColumns={1} caption="Server Specifications">
+* - Component
+  - Minimum
+  - Recommended
+* - CPU
+  - 4 cores
+  - 8+ cores
+* - RAM
+  - 16 GB
+  - 32 GB
+* - Storage
+  - 500 GB SSD
+  - 1 TB NVMe
+</ListTable>
+
+MDX source:
+
+```jsx
+<ListTable headerRows={1} headerColumns={1} caption="Server Specifications">
+* - Component
+  - Minimum
+  - Recommended
+* - CPU
+  - 4 cores
+  - 8+ cores
+* - RAM
+  - 16 GB
+  - 32 GB
+* - Storage
+  - 500 GB SSD
+  - 1 TB NVMe
+</ListTable>
+```
+
+## Table with Lists in Cells
+
+<ListTable headerRows={1} caption="Feature Breakdown">
+* - Category
+  - Features
+  - Requirements
+* - Security
+  - - SSL/TLS encryption
+    - Role-based access
+    - Audit logging
+  - - Valid certificates
+    - LDAP/AD integration
+* - Performance
+  - - Auto-scaling
+    - Load balancing
+    - Caching
+  - - Kubernetes cluster
+    - Redis instance
+* - Monitoring
+  - - Metrics collection
+    - Alerting
+    - Dashboards
+  - - Prometheus
+    - Grafana
+</ListTable>
+
+MDX source:
+
+```jsx
+<ListTable headerRows={1} caption="Feature Breakdown">
+* - Category
+  - Features
+  - Requirements
+* - Security
+  - - SSL/TLS encryption
+    - Role-based access
+    - Audit logging
+  - - Valid certificates
+    - LDAP/AD integration
+* - Performance
+  - - Auto-scaling
+    - Load balancing
+    - Caching
+  - - Kubernetes cluster
+    - Redis instance
+* - Monitoring
+  - - Metrics collection
+    - Alerting
+    - Dashboards
+  - - Prometheus
+    - Grafana
+</ListTable>
+```
+
+## Table with Merged Cells (Row Span)
+
+<ListTable headerRows={1} caption="Multi-Region Deployment">
+* - Region
+  - Datacenter
+  - Status
+* - [r3] US East
+  - Virginia
+  - <Badge intent="success" minimal>Active</Badge>
+* - _
+  - Ohio
+  - <Badge intent="success" minimal>Active</Badge>
+* - _
+  - N. Virginia
+  - <Badge intent="warning" minimal>Standby</Badge>
+* - [r2] EU West
+  - Ireland
+  - <Badge intent="success" minimal>Active</Badge>
+* - _
+  - Frankfurt
+  - <Badge intent="success" minimal>Active</Badge>
+</ListTable>
+
+MDX source:
+
+```jsx
+<ListTable headerRows={1} caption="Multi-Region Deployment">
+* - Region
+  - Datacenter
+  - Status
+* - [r3] US East
+  - Virginia
+  - <Badge intent="success" minimal>Active</Badge>
+* - _
+  - Ohio
+  - <Badge intent="success" minimal>Active</Badge>
+* - _
+  - N. Virginia
+  - <Badge intent="warning" minimal>Standby</Badge>
+* - [r2] EU West
+  - Ireland
+  - <Badge intent="success" minimal>Active</Badge>
+* - _
+  - Frankfurt
+  - <Badge intent="success" minimal>Active</Badge>
+</ListTable>
+```
+
+## Complex Table with Both Row and Column Spans
+
+<ListTable headerRows={2} headerColumns={1} caption="Product Matrix">
+* - [r2c2] Product
+  - _
+  - [c2] Plan
+  - _
+* - _
+  - _
+  - Standard
+  - Premium
+* - [r2] Storage
+  - Basic
+  - 100 GB
+  - 500 GB
+* - _
+  - Advanced
+  - 1 TB
+  - 10 TB
+* - [r2] Compute
+  - Basic
+  - 4 cores
+  - 8 cores
+* - _
+  - Advanced
+  - 16 cores
+  - 32 cores
+</ListTable>
+
+## Notes
+
+- **Caption**: Each table has a caption that appears above it
+- **Header Rows**: Use `headerRows={1}` to make the first row a header
+- **Header Columns**: Use `headerColumns={1}` to make the first column headers
+- **Row Span**: Use `[r3]` to span 3 rows, followed by `_` placeholders
+- **Column Span**: Use `[c2]` to span 2 columns, followed by `_` placeholders
+- **Combined Spans**: Use `[r2c2]` to span both rows and columns
+- **Markdown**: Cells support markdown including links, code, bold, italic, etc.
+- **Line Breaks**: For simple line breaks within cells without creating a new paragraph, use `\` or `<br/>` tags.
+- **Paragraphs**: For multi-paragraph content within a cell, separate paragraphs with blank lines.
+- **Lists**: Use normal Markdown list syntax within cells.
+
+import { ListTable } from '@/components/ListTable';
+
+<ListTable headerRows={1} headerColumns={1} caption="External URLs Table">
+* - URL
+  - Component
+  - Usage
+* - [https://licensingservice.ddn.io](https://licensingservice.ddn.io)
+  - n/a
+  - - SDS Licensingservice
+    - Configuration services (Bundle/Upgrade)
+* - [https://exts3.ddn.io](https://exts3.ddn.io)
+  - n/a
+  - - Upload files using S3 protocol
+* - [https://logcollector.ddn.io](https://logcollector.ddn.io)
+  - n/a
+  - - Receives JSON formatted events and logs from call home, and on-demand log uploads
+* - [https://ddn.com](https://ddn.com)
+  - n/a
+  - - DDN corporate website
+* - [https://redsupport.ddn.com](https://redsupport.ddn.com)
+
+    [https://redsupport-terminal.ddn.com](https://redsupport-terminal.ddn.com)
+  - redsupport
+  - - Uses TCP protocol
+    - Remote support access
+    - Required for DDN Infinia support session
+* - [https://storage.googleapis.com](https://storage.googleapis.com)
+  - [redapi](#required-ports-and-protocols)
+  - - Access DDN Infinia packages
+    - Support bundle upload destination
+* - [http://archive.ubuntu.com](http://archive.ubuntu.com)
+
+    [http://archive.canonical.com](http://archive.canonical.com)
+
+    [http://security.ubuntu.com](http://security.ubuntu.com)
+
+    [http://ports.ubuntu.com](http://ports.ubuntu.com)
+  - n/a
+  - - Install or update dependencies while installing
+* - [https://docker.io](https://docker.io)
+  - n/a
+  - - Used for pulling base container images and dependencies
+    - [Related domain URLs that must be added to a firewall Allowlist](https://docs.docker.com/desktop/setup/allow-list/)
+* - [https://quay.io](https://quay.io)
+  - [redsetup](#required-ports-and-protocols)
+  - - DDN Infinia container image registry
+    - Access DDN Infinia packages
+    - [List of quay CDN available at Public CIDR Lists for Red Hat](https://access.redhat.com/articles/1525183)
+* - [https://events.pagerduty.com](https://events.pagerduty.com)
+  - redalert
+  - - PagerDuty event endpoint
+    - Required if notifications are configured to be sent to PagerDuty
+* - Monitoring events and notification endpoints
+  - n/a
+  - - Required if notifications are configured to be sent via email, slack, external alertmanager, etc.
+</ListTable>
