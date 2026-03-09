@@ -67,3 +67,35 @@ navigation:
 ```
 
 For complete navigation options, see the [navigation documentation](https://buildwithfern.com/learn/docs/configuration/navigation).
+
+<Step>
+      Validate final cluster status to ensure that all nodes and services are healthy and running:
+
+      ```bash
+      redcli cluster show
+      ```
+
+      Example output:
+
+      ```none maxLines=0
+      7:53PM INF Auto Selecting cluster: c1
+      7:53PM INF Set limit to 25.
+      ┌─────────────────┬─────────┬──────────────┬─────────┬─────────────┬───────────────────┬────────────────┬──────────┬───────────────┬──────────────┬─────────────────┐
+      │ NAME            │ STATE   │ LEADER       │ FEATURE │ RUNTIME     │ INSTANCES/EVICTED │ DRIVES/EVICTED │ CAPACITY │ %USAGE        │ PROVISIONING │ NETWORK TYPE(S) │
+      │                 │         │              │ VERSION │ CONFIG      │                   │                │          │               │ RATIO        │                 │
+      ├─────────────────┼─────────┼──────────────┼─────────┼─────────────┼───────────────────┼────────────────┼──────────┼───────────────┼──────────────┼─────────────────┤
+      │  <cluster-name> │ running │ user-agent-4 │  2.2.77 │ auto_config │               5/0 │           20/0 │ 382.8 GB │ 434.5 MB (0%) │         0.93 │  [tcp RoCE tcp] │
+      └─────────────────┴─────────┴──────────────┴─────────┴─────────────┴───────────────────┴────────────────┴──────────┴───────────────┴──────────────┴─────────────────┘
+      ```
+</Step>
+
+```none maxLines=0
+      7:53PM INF Auto Selecting cluster: c1
+      7:53PM INF Set limit to 25.
+      ┌──────┬─────────┬───────────────┬─────────┬────────────┬───────────────────┬────────────────┬──────────┬───────────────┬──────────────┬─────────────────┐
+      │ NAME │ STATE   │ LEADER        │ FEATURE │ RUNTIME    │ INSTANCES/EVICTED │ DRIVES/EVICTED │ CAPACITY │ %USAGE        │ PROVISIONING │ NETWORK TYPE(S) │
+      │      │         │               │ VERSION │ CONFIG     │                   │                │          │               │ RATIO        │                 │
+      ├──────┼─────────┼───────────────┼─────────┼────────────┼───────────────────┼────────────────┼──────────┼───────────────┼──────────────┼─────────────────┤
+      │   c1 │ running │ <infinia-001> │  2.2.77 │ <your_cfg> │               4/0 │           20/0 │ 382.8 GB │ 434.5 MB (0%) │         0.93 │  [tcp RoCE tcp] │
+      └──────┴─────────┴───────────────┴─────────┴────────────┴───────────────────┴────────────────┴──────────┴───────────────┴──────────────┴─────────────────┘
+```
