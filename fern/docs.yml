@@ -34,6 +34,12 @@ navigation:
           - page: Customize your docs
             path: docs/pages/customization.mdx
             icon: fa-duotone fa-palette
+          - page: API reference
+            path: docs/pages/api-reference-overview.mdx
+            icon: fa-duotone fa-code
+          - page: Support
+            path: docs/pages/support.mdx
+            icon: fa-duotone fa-headset
           - section: Test Page
             path: docs/pages/test-page/test-page.mdx
             collapsed: true
@@ -42,16 +48,10 @@ navigation:
                 path: docs/pages/test-page/test-section.mdx
               - page: Test Table
                 path: docs/pages/test-page/test-table.mdx
-          - page: Support
-            path: docs/pages/support.mdx
-            icon: fa-duotone fa-headset
           - section: Demo Section
             contents:
               - page: Demo Page
                 path: ./docs/pages/docs/get-started/demo-section/demo-page.mdx
-          - page: API reference
-            path: docs/pages/api-reference-overview.mdx
-            icon: fa-duotone fa-code
       - section: Changelog
         contents:
           - changelog: docs/changelog
