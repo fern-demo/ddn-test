@@ -18,8 +18,8 @@ jobs:
         with:
           node-version: '24' # Specify the Node.js version
           cache: 'npm' # Enables automatic dependency caching for faster installs
-          cache-dependency-path: './package-lock.json'
-          
+          cache-dependency-path: './package-lock.json' # Caches the package-lock.json file
+
       - name: Install dependencies
         run: npm ci # Use 'npm ci' for clean installs in CI/CD environments
 
