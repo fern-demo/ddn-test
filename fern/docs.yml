@@ -1,3 +1,4 @@
+
 instances:
   - url: ddn-test.docs.buildwithfern.com
 ai-search:
@@ -48,6 +49,9 @@ navigation:
             contents:
               - page: Demo Page
                 path: ./docs/pages/docs/get-started/demo-section/demo-page.mdx
+          - page: API reference
+            path: docs/pages/api-reference-overview.mdx
+            icon: fa-duotone fa-code
       - section: Changelog
         contents:
           - changelog: docs/changelog
@@ -59,7 +63,7 @@ navbar-links:
     text: Dashboard
     url: https://dashboard.buildwithfern.com
   - type: github
-    value: https://github.com/fern-api/fern
+    value: https://github.com/fern-apidocs/fern
 colors:
   accentPrimary:
     dark: '#c01d2e'
