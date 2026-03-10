@@ -20,8 +20,8 @@ jobs:
 #          cache: 'npm' # Enables automatic dependency caching for faster installs
 #          cache-dependency-path: './package-lock.json' # Caches the package-lock.json file
 
-      - name: Install dependencies
-        run: npm ci # Use 'npm ci' for clean installs in CI/CD environments
+#      - name: Install dependencies
+#        run: npm ci # Use 'npm ci' for clean installs in CI/CD environments
 
       - name: Install Fern CLI tool
         run: npm install -g fern-api
