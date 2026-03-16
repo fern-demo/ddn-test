@@ -46,8 +46,13 @@ navigation:
             contents:
               - page: Test Section
                 path: docs/pages/test-page/test-section.mdx
+                icon: fa-duotone fa-vial
               - page: Test Table
                 path: docs/pages/test-page/test-table.mdx
+                icon: fa-duotone fa-table-list
+              - page: Manage CATs
+                path: docs/pages/test-page/manage-cats.mdx
+                icon: fa-duotone fa-cat
           - section: Demo Section
             contents:
               - page: Demo Page
