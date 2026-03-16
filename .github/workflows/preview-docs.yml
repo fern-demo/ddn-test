@@ -12,6 +12,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Use Node.js
+        uses: actions/setup-node@v4 # Action to install Node.js and npm
+        with:
+          node-version: '24' # Specify the Node.js version
+          cache: 'npm' # Enables automatic dependency caching for faster installs
+
+      - name: Install dependencies
+        run: npm ci # Use 'npm ci' for clean installs in CI/CD environments   
+           
       - name: Install Fern CLI tool
         run: npm install -g fern-api
 

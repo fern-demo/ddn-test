@@ -1,0 +1,227 @@
+name: Remove Highlighting Tags
+
+# This workflow removes highlighting tags from MDX files.
+#
+# Usage:
+# 1. Scheduled runs: Automatically runs weekly on Sundays at 2 AM UTC
+#    - Creates a PR with changes to main branch
+#    - Branch name: fix/remove-highlighting-tags-YYYYMMDD-HHMMSS
+#
+# 2. Manual runs on main branch:
+#    - Go to Actions > Remove Highlighting Tags > Run workflow
+#    - Select branch: main
+#    - Configure options (dry_run, pattern, verbose)
+#    - Creates a PR with changes
+#
+# 3. Manual runs on PR branches (to clean up before merging):
+#    - Go to Actions > Remove Highlighting Tags > Run workflow
+#    - Select your PR branch (e.g., feature/my-changes)
+#    - Set dry_run to false to apply changes
+#    - Changes are committed directly to your PR branch
+#    - No new PR is created (changes go to existing PR)
+#
+# Options:
+# - dry_run: Preview changes without modifying files (default: true)
+# - verbose: Show detailed line numbers and tags found (default: false)
+# - pattern: Glob pattern for MDX files (default: fern/versions/*/*.mdx)
+
+on:
+  # Manual trigger with inputs
+  workflow_dispatch:
+    inputs:
+      repository_path:
+        description: 'Path to repository (relative to workspace root)'
+        required: false
+        default: '.'
+        type: string
+      dry_run:
+        description: 'Run in dry-run mode (no changes will be made)'
+        required: false
+        default: true
+        type: boolean
+      pattern:
+        description: 'Glob pattern for finding MDX files'
+        required: false
+        default: 'fern/versions/*/*.mdx'
+        type: string
+      verbose:
+        description: 'Show detailed tag information'
+        required: false
+        default: false
+        type: boolean
+
+  # Optional: Scheduled trigger (runs weekly on Sundays at 2 AM UTC)
+  schedule:
+    - cron: '0 2 * * 0'
+
+jobs:
+  remove-tags:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      
+      - name: Run tag removal script
+        id: remove_tags
+        run: |
+          # Determine dry-run flag
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            DRY_RUN_FLAG=""
+            echo "Running in LIVE mode (scheduled run)"
+          elif [ "${{ inputs.dry_run }}" = "true" ]; then
+            DRY_RUN_FLAG="--dry-run"
+            echo "Running in DRY-RUN mode"
+          else
+            DRY_RUN_FLAG=""
+            echo "Running in LIVE mode (manual trigger)"
+          fi
+
+          # Determine verbose flag
+          VERBOSE_FLAG=""
+          if [ "${{ inputs.verbose }}" = "true" ]; then
+            VERBOSE_FLAG="--verbose"
+            echo "VERBOSE mode enabled"
+          fi
+
+          # Set repository path
+          REPO_PATH="${{ inputs.repository_path || '.' }}"
+          PATTERN="${{ inputs.pattern || 'fern/versions/*/*.mdx' }}"
+
+          echo "Repository path: $REPO_PATH"
+          echo "Pattern: $PATTERN"
+
+          # Run the script and capture output and exit code
+          set +e  # Don't exit on error yet
+          python3 tools/remove_highlighting_tags.py "$REPO_PATH" $DRY_RUN_FLAG $VERBOSE_FLAG --pattern "$PATTERN" | tee output.log
+          SCRIPT_EXIT_CODE=$?
+          set -e
+
+          # Extract summary statistics with defaults
+          FILES_PROCESSED=$(grep "Files processed:" output.log | awk '{print $3}' || echo "0")
+          FILES_MODIFIED=$(grep "Files modified:" output.log | awk '{print $3}' || echo "0")
+          TAGS_REMOVED=$(grep "Total tags removed:" output.log | awk '{print $4}' || echo "0")
+
+          # Set defaults if variables are empty
+          FILES_PROCESSED=${FILES_PROCESSED:-0}
+          FILES_MODIFIED=${FILES_MODIFIED:-0}
+          TAGS_REMOVED=${TAGS_REMOVED:-0}
+
+          echo "files_processed=$FILES_PROCESSED" >> $GITHUB_OUTPUT
+          echo "files_modified=$FILES_MODIFIED" >> $GITHUB_OUTPUT
+          echo "tags_removed=$TAGS_REMOVED" >> $GITHUB_OUTPUT
+          echo "dry_run=${{ inputs.dry_run }}" >> $GITHUB_OUTPUT
+
+          # Check exit code and fail if script failed
+          if [ $SCRIPT_EXIT_CODE -ne 0 ]; then
+            echo "Error: Script exited with code $SCRIPT_EXIT_CODE"
+            exit $SCRIPT_EXIT_CODE
+          fi
+      
+      - name: Check for changes
+        id: check_changes
+        if: inputs.dry_run == false || github.event_name == 'schedule'
+        run: |
+          # Check if files were actually modified
+          FILES_MODIFIED="${{ steps.remove_tags.outputs.files_modified }}"
+          if [ "$FILES_MODIFIED" = "0" ]; then
+            echo "No files were modified, skipping PR creation"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          elif [ -n "$(git status --porcelain)" ]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Create branch and commit changes
+        if: (inputs.dry_run == false || github.event_name == 'schedule') && steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          # Configure git
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Create a new branch with fix/ prefix
+          BRANCH_NAME="fix/remove-highlighting-tags-$(date +%Y%m%d-%H%M%S)"
+          git checkout -b "$BRANCH_NAME"
+
+          # Stage and commit changes
+          git add -A
+          git commit -m "Remove highlighting tags from MDX files
+
+          - Files processed: ${{ steps.remove_tags.outputs.files_processed }}
+          - Files modified: ${{ steps.remove_tags.outputs.files_modified }}
+          - Tags removed: ${{ steps.remove_tags.outputs.tags_removed }}
+
+          Automated cleanup by GitHub Actions"
+
+          # Push the branch
+          git push origin "$BRANCH_NAME"
+
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+        id: create_branch
+      
+      - name: Create Pull Request
+        if: (inputs.dry_run == false || github.event_name == 'schedule') && steps.check_changes.outputs.has_changes == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const branchName = '${{ steps.create_branch.outputs.branch_name }}';
+            const filesProcessed = '${{ steps.remove_tags.outputs.files_processed }}';
+            const filesModified = '${{ steps.remove_tags.outputs.files_modified }}';
+            const tagsRemoved = '${{ steps.remove_tags.outputs.tags_removed }}';
+            
+            const prBody = `## Highlighting Tags Removal
+            
+            This PR automatically removes highlighting tags from MDX files.
+            
+            ### Summary
+            - **Files processed:** ${filesProcessed}
+            - **Files modified:** ${filesModified}
+            - **Tags removed:** ${tagsRemoved}
+            
+            ### Tags Removed
+            The following tags were removed (content preserved except for deletion tags):
+            - \`<span className="addition">...</span>\` → content preserved
+            - \`<span className="deletion">...</span>\` → content deleted
+            - \`<span className="change">...</span>\` → content preserved
+            - \`<div className="addition">...</div>\` → content preserved
+            - \`<div className="deletion">...</div>\` → content deleted
+            - \`<div className="change">...</div>\` → content preserved
+            
+            ### Rollback Instructions
+            If you need to rollback these changes:
+            \`\`\`bash
+            git revert <commit-hash>
+            \`\`\`
+            
+            Or close this PR without merging.
+            
+            ### Verification
+            Please review the changes to ensure:
+            1. Content is preserved correctly (except deletion tags)
+            2. Whitespace cleanup is appropriate
+            3. No unintended changes were made
+            
+            ---
+            *Automated by GitHub Actions workflow*`;
+            
+            const { data: pr } = await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Remove highlighting tags from ${filesModified} MDX file(s)`,
+              head: branchName,
+              base: 'main',
+              body: prBody
+            });
+            
+            core.info(`Pull request created: ${pr.html_url}`);
