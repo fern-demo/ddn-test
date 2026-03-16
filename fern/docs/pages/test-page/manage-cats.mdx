@@ -1,0 +1,16 @@
+---
+title: Manage CATs
+slug: manage-cats
+---
+
+<Note>
+   This section applies to realm admins only.
+</Note>
+
+<Info>
+   If you need to enable the nameserver as stated in one of the prerequisites, make sure to review the following implications before proceeding with the realm update.
+   
+   Running `redcli realm config update` command may trigger concurrent restarts of services across all nodes when applying configuration changes. To minimize disruption, services of the same type are restarted simultaneously. However, data path services (for example, `reds3`, `red instance`) will restart only if they are directly affected by the changes. These restarts may cause brief interruptions in data flow.
+   
+   Therefore, DDN recommends to perform realm update during maintenance windows or periods of low traffic to avoid potential impact on critical operations.
+</Info>
