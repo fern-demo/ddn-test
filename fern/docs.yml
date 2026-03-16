@@ -33,6 +33,9 @@ navigation:
           - page: Customize your docs
             path: docs/pages/customization.mdx
             icon: fa-duotone fa-palette
+          - page: Support
+            path: docs/pages/support.mdx
+            icon: fa-duotone fa-headset
           - section: Test Page
             path: docs/pages/test-page/test-page.mdx
             collapsed: true
@@ -46,9 +49,6 @@ navigation:
               - page: Manage CATs
                 path: docs/pages/test-page/manage-cats.mdx
                 icon: fa-duotone fa-cat
-          - page: Support
-            path: docs/pages/support.mdx
-            icon: fa-duotone fa-headset
           - section: Demo Section
             contents:
               - page: Demo Page
