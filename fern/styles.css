@@ -30,27 +30,75 @@
 
    /* ===== Styles to highlight changes ===== */
 
+   /* Define color variables for change highlighting that adapt to light/dark mode */
+   :root {
+      /* Light mode colors */
+      --addition-bg: #d4f4dd;
+      --addition-border: #22863a;
+      --deletion-bg: #ffeef0;
+      --deletion-border: #d73a49;
+      --deletion-text: rgba(0, 0, 0, 0.7);
+      --deletion-line-color: rgba(215, 58, 73, 0.4);
+      --change-bg: #f3e8ff;
+      --change-border: #8b5cf6;
+   }
+
+   /* Dark mode colors */
+   html.dark,
+   html[style*="color-scheme: dark"] {
+      --addition-bg: rgba(34, 134, 58, 0.2);
+      --addition-border: #3fb950;
+      --deletion-bg: rgba(215, 58, 73, 0.15);
+      --deletion-border: #f85149;
+      --deletion-text: rgba(255, 255, 255, 0.6);
+      --deletion-line-color: rgba(139, 35, 50, 0.8);
+      --change-bg: rgba(139, 92, 246, 0.15);
+      --change-border: #a78bfa;
+   }
+
+   /* Fallback for system dark mode preference */
+   @media (prefers-color-scheme: dark) {
+      :root:not(.light) {
+         --addition-bg: rgba(34, 134, 58, 0.2);
+         --addition-border: #3fb950;
+         --deletion-bg: rgba(215, 58, 73, 0.15);
+         --deletion-border: #f85149;
+         --deletion-text: rgba(255, 255, 255, 0.6);
+         --deletion-line-color: rgba(139, 35, 50, 0.8);
+         --change-bg: rgba(139, 92, 246, 0.15);
+         --change-border: #a78bfa;
+      }
+   }
+
    .addition {
       background-color: #d4f4dd;
       border-left: 4px solid #22863a;
+      background-color: var(--addition-bg);
+      border-left: 4px solid var(--addition-border);
       padding: 0px 4px 0px 8px;
    }
 
    .deletion {
       background-color: #ffeef0;
       border-left: 4px solid #d73a49;
+      background-color: var(--deletion-bg);
+      border-left: 4px solid var(--deletion-border);
       padding: 0px 4px 0px 8px;
       text-decoration: line-through;
       text-decoration-color: rgba(215, 58, 73, 0.4);
       color: rgba(0, 0, 0, 0.7);
+      text-decoration-color: var(--deletion-line-color);
+      color: var(--deletion-text);
    }
 
    .change {
       background-color: #f3e8ff;
       border-left: 4px solid #8b5cf6;
+      background-color: var(--change-bg);
+      border-left: 4px solid var(--change-border);
       padding: 0px 4px 0px 8px;
    }
-
+   
    /* ===== Nested ordered list styling ===== */
 
    ol ol > li {
