@@ -1,0 +1,40 @@
+---
+slug: docs/configure-nameserver-corefile/configure-nameserver-corefile
+title: Configure Nameserver Corefile
+---
+
+### Configure Nameserver Corefile (DRAFT 1)
+
+The DDN Infinia nameserver component uses a configuration file named `Corefile`. Normally, you do not need to modify this file.
+
+If you must change the nameserver configuration, do not modify the `Corefile` directly. Instead, follow the procedure below.
+
+**Procedure**
+
+<Steps>
+  <Step>
+    Modify the `Corefile` kept at `/opt/ddn/red/nameserver/Corefile.tmpl`
+
+  </Step>
+
+  <Step>
+    Run the following command on the same node where you modified the file:
+
+    ```bash
+    redcli realm update
+    ```
+  </Step>
+</Steps>
+
+
+This ensures that your changes are tracked and are not overwritten during upgrades or realm updates.
+
+For more information, contact DDN Customer Support via the DDN Customer Support Portal ([support.ddn.io](https://support.ddn.io)).
+
+### Configure Nameserver Corefile (DRAFT 2)
+
+The DDN Infinia nameserver component uses a configuration file named `Corefile`. Normally, you do not need to modify this file.
+
+If there are changes required, you should not modify the nameserver `Corefile` directly. Instead, modify the file kept at `/opt/ddn/red/nameserver/Corefile.tmpl` and then run `redcli realm update` on the same node where you modified the file. This ensures that the changes are tracked and aren't overwritten during upgrades or realm updates.
+
+For more information, contact DDN Customer Support via the DDN Customer Support Portal ([support.ddn.io](https://support.ddn.io)).

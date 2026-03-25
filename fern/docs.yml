@@ -1,4 +1,3 @@
-
 instances:
   - url: ddn-test.docs.buildwithfern.com
 ai-search:
@@ -60,6 +59,10 @@ navigation:
       - section: Changelog
         contents:
           - changelog: docs/changelog
+      - section: Configure Nameserver Corefile
+        contents:
+          - page: Configure Nameserver Corefile
+            path: ./docs/pages/docs/configure-nameserver-corefile/configure-nameserver-corefile.mdx
 navbar-links:
   - type: minimal
     text: Fork this repo
