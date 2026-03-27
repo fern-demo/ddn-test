@@ -1,0 +1,31 @@
+Searching for MDX files in: .
+Pattern: fern/docs/pages/*.mdx
+VERBOSE MODE - Showing detailed tag information
+
+Found 12 MDX file(s)
+
+  fern/docs/pages/api-reference-overview.mdx: No tags found
+  fern/docs/pages/customization.mdx: No tags found
+  fern/docs/pages/docs/get-started/demo-section/demo-page.mdx: No tags found
+  fern/docs/pages/editing-your-docs.mdx: No tags found
+  fern/docs/pages/navigation.mdx: No tags found
+  fern/docs/pages/support.mdx: No tags found
+  fern/docs/pages/test-page/manage-cats.mdx: No tags found
+✓ fern/docs/pages/test-page/test-page.mdx: Removed 1 tag(s)
+  Detailed tags removed:
+    Line 65: <div className="addition"> **Table 1** <StickySearchableTable> | Plant | Lig...</div>
+✓ fern/docs/pages/test-page/test-section.mdx: Removed 2 tag(s)
+  Detailed tags removed:
+    Line 9: <span className="addition">`redcli dataset profile show`</span>
+    Line 30: <div className="change"> The Dataset Profile Details table below describes...</div>
+  fern/docs/pages/test-page/test-table.mdx: No tags found
+  fern/docs/pages/welcome.mdx: No tags found
+  fern/docs/pages/writing-content.mdx: No tags found
+
+============================================================
+Summary:
+  Files processed: 12
+  Files modified: 2
+  Files failed: 0
+  Total tags removed: 3
+============================================================
