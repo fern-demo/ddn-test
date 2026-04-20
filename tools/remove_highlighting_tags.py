@@ -267,7 +267,7 @@ def process_mdx_file(file_path: Path, dry_run: bool = False, verbose: bool = Fal
         return False, 0, []
 
 
-def find_mdx_files(root_path: Path, pattern: str = "fern/versions/*/*.mdx") -> list[Path]:
+def find_mdx_files(root_path: Path, pattern: str = "fern/docs/pages/*.mdx") -> list[Path]:
     """
     Find all MDX files matching the pattern.
     
@@ -310,8 +310,8 @@ def main():
     )
     parser.add_argument(
         "--pattern",
-        default="fern/versions/*/*.mdx",
-        help="Glob pattern for finding MDX files (default: fern/versions/*/*.mdx)"
+        default="fern/docs/pages/*.mdx",
+        help="Glob pattern for finding MDX files (default: fern/docs/pages/*.mdx)"
     )
     parser.add_argument(
         "--verbose",
