@@ -359,7 +359,7 @@
   .my-custom-color .fern-frame figcaption,
   .my-custom-color [class*="frame"] figcaption,
   .my-custom-color figure figcaption {
-    background-color: var(--my-custom-bg-color) !important;
+    /*background-color: var(--my-custom-bg-color) !important;*/  /* Comment out to use default background color */
     color: var(--my-custom-text-color) !important;
   }
 }
