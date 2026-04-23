@@ -340,4 +340,26 @@
     background-color: var(--my-custom-bg-color) !important;
     color: var(--my-custom-text-color) !important;
   }
+
+  /* Target Frame component */
+  .my-custom-color .fern-frame,
+  .my-custom-color [class*="frame"],
+  .my-custom-color figure {
+    background-color: var(--my-custom-bg-color) !important;
+  }
+
+  /* Target image containers within Frame */
+  .my-custom-color .fern-frame img,
+  .my-custom-color [class*="frame"] img,
+  .my-custom-color figure img {
+    background-color: transparent !important;
+  }
+
+  /* Target caption within Frame */
+  .my-custom-color .fern-frame figcaption,
+  .my-custom-color [class*="frame"] figcaption,
+  .my-custom-color figure figcaption {
+    background-color: var(--my-custom-bg-color) !important;
+    color: var(--my-custom-text-color) !important;
+  }
 }
