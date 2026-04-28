@@ -1,3 +1,4 @@
+
 @layer ddn-custom 
 {
 
@@ -291,4 +292,74 @@
    .right-align {
    text-align: right;
    }
+   /* Define color variables that adapt to light/dark mode */
+  :root {
+    --my-custom-text-color: #FF0000;
+    --my-custom-bg-color: rgba(255, 0, 0, 0.1);  /* Semi-transparent red for light backgrounds */
+   }
+
+   /* Dark mode colors */
+   html.dark,
+   html[style*="color-scheme: dark"] {
+    --my-custom-text-color: #FF6666;
+    --my-custom-bg-color: rgba(255, 0, 0, 0.15);  /* Semi-transparent red for dark backgrounds */
+  }
+
+  /* For inline content */
+  .my-custom-color {
+    color: var(--my-custom-text-color);
+  }
+
+  /* For code blocks - target the actual code elements */
+  .my-custom-color pre,
+  .my-custom-color code,
+  .my-custom-color pre code,
+  .my-custom-color .code-block {
+    color: var(--my-custom-text-color) !important;
+    background-color: var(--my-custom-bg-color) !important;
+  }
+
+  /* Target syntax highlighted tokens inside code blocks */
+  .my-custom-color pre code *,
+  .my-custom-color .code-block * {
+    color: var(--my-custom-text-color) !important;
+  }
+
+  /* For block content with background */
+  .my-custom-block {
+    background-color: var(--my-custom-bg-color) !important;  /* ADD !important */
+    color: var(--my-custom-text-color);
+    padding: 0px 4px 0px 8px;
+  }
+
+  /* ALSO ADD - Apply background to code blocks inside .my-custom-block */
+  .my-custom-block pre,
+  .my-custom-block code,
+  .my-custom-block pre code,
+  .my-custom-block .code-block {
+    background-color: var(--my-custom-bg-color) !important;
+    color: var(--my-custom-text-color) !important;
+  }
+
+  /* Target Frame component */
+  .my-custom-color .fern-frame,
+  .my-custom-color [class*="frame"],
+  .my-custom-color figure {
+    background-color: var(--my-custom-bg-color) !important;
+  }
+
+  /* Target image containers within Frame */
+  .my-custom-color .fern-frame img,
+  .my-custom-color [class*="frame"] img,
+  .my-custom-color figure img {
+    background-color: transparent !important;
+  }
+
+  /* Target caption within Frame */
+  .my-custom-color .fern-frame figcaption,
+  .my-custom-color [class*="frame"] figcaption,
+  .my-custom-color figure figcaption {
+    /*background-color: var(--my-custom-bg-color) !important;*/  /* Comment out to use default background color */
+    color: var(--my-custom-text-color) !important;
+  }
 }
