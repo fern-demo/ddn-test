@@ -292,74 +292,76 @@
    .right-align {
    text-align: right;
    }
-   /* Define color variables that adapt to light/dark mode */
-  :root {
-    --my-custom-text-color: #FF0000;
-    --my-custom-bg-color: rgba(255, 0, 0, 0.1);  /* Semi-transparent red for light backgrounds */
+   
+  /* ====== Internal Only Content Styling ====== */ 
+
+   :root {
+     --internal-only-text-color: #FF0000;
+     --internal-only-bg-color: rgba(255, 0, 0, 0.35);  /* 35% opacity - subtle */
    }
 
    /* Dark mode colors */
    html.dark,
    html[style*="color-scheme: dark"] {
-    --my-custom-text-color: #FF6666;
-    --my-custom-bg-color: rgba(255, 0, 0, 0.15);  /* Semi-transparent red for dark backgrounds */
-  }
+     --internal-only-text-color: #FF6666;
+     --internal-only-bg-color: rgba(255, 60, 60, 0.35);  /* 35% opacity - subtle */
+   }
 
-  /* For inline content */
-  .my-custom-color {
-    color: var(--my-custom-text-color);
-  }
+   /* For inline content and "Internal Only" label*/
+   .internal-text {
+     color: var(--internal-only-text-color);
+   }
 
-  /* For code blocks - target the actual code elements */
-  .my-custom-color pre,
-  .my-custom-color code,
-  .my-custom-color pre code,
-  .my-custom-color .code-block {
-    color: var(--my-custom-text-color) !important;
-    background-color: var(--my-custom-bg-color) !important;
-  }
+   /* For block-level content */
+   .internal-block {
+     background-color: var(--internal-only-bg-color);
+   }
 
-  /* Target syntax highlighted tokens inside code blocks */
-  .my-custom-color pre code *,
-  .my-custom-color .code-block * {
-    color: var(--my-custom-text-color) !important;
-  }
+   /* Table cells transparent in dark mode to avoid stacking */
+   html.dark .internal-block table td,
+   html.dark .internal-block table th,
+   html[style*="color-scheme: dark"] .internal-block table td,
+   html[style*="color-scheme: dark"]   .internal-block table th   {
+     background-color: transparent !important;
+   }
 
-  /* For block content with background */
-  .my-custom-block {
-    background-color: var(--my-custom-bg-color) !important;  /* ADD !important */
-    color: var(--my-custom-text-color);
-    padding: 0px 4px 0px 8px;
-  }
+   /* Table cells with background in light mode only */
+   .internal-block table td,
+   .internal-block table th {
+     background-color: var(--internal-only-bg-color) !important;
+   }
 
-  /* ALSO ADD - Apply background to code blocks inside .my-custom-block */
-  .my-custom-block pre,
-  .my-custom-block code,
-  .my-custom-block pre code,
-  .my-custom-block .code-block {
-    background-color: var(--my-custom-bg-color) !important;
-    color: var(--my-custom-text-color) !important;
-  }
+   /* Ensure other child elements don't add extra backgrounds */
+   .internal-block pre code,
+   .internal-block .fern-card p,
+   .internal-block [class*="card"] p {
+     background-color: transparent !important;
+   }
 
-  /* Target Frame component */
-  .my-custom-color .fern-frame,
-  .my-custom-color [class*="frame"],
-  .my-custom-color figure {
-    background-color: var(--my-custom-bg-color) !important;
-  }
+   /* Make child elements transparent - they'll show the parent background */
+   .internal-block pre,
+   .internal-block .code-block,
+   .internal-block .fern-card,
+   .internal-block [class*="card"],
+   .internal-block .fern-frame,
+   .internal-block figure {
+     background-color: transparent !important;
+   }
 
-  /* Target image containers within Frame */
-  .my-custom-color .fern-frame img,
-  .my-custom-color [class*="frame"] img,
-  .my-custom-color figure img {
-    background-color: transparent !important;
-  }
+   /* Ensure ALL elements inside code blocks are transparent */
+   .internal-block pre,
+   .internal-block pre *,
+   .internal-block .code-block,
+   .internal-block .code-block *,
+   .internal-block .fern-card pre,
+   .internal-block .fern-card pre *,
+   .internal-block [class*="card"] pre,
+   .internal-block [class*="card"] pre * {
+     background-color: transparent !important;
+   }
 
-  /* Target caption within Frame */
-  .my-custom-color .fern-frame figcaption,
-  .my-custom-color [class*="frame"] figcaption,
-  .my-custom-color figure figcaption {
-    /*background-color: var(--my-custom-bg-color) !important;*/  /* Comment out to use default background color */
-    color: var(--my-custom-text-color) !important;
-  }
+   /* Inline code (backticks) should show the parent background */
+   .internal-block code {
+     background-color: transparent !important;
+   }
 }
