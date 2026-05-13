@@ -53,6 +53,9 @@ navigation:
               - page: Manage CATs
                 path: docs/pages/test-page/manage-cats.mdx
                 icon: fa-duotone fa-cat
+              - page: Internal Only Content
+                path: docs/pages/test-page/internal-only-content.mdx
+                icon: fa-duotone fa-lock
           - section: Demo Section
             contents:
               - page: Demo Page

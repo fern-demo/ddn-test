@@ -1,3 +1,4 @@
+
 @layer ddn-custom 
 {
 
@@ -290,5 +291,77 @@
    /* Right-aligned icon container */
    .right-align {
    text-align: right;
+   }
+   
+  /* ====== Internal Only Content Styling ====== */ 
+
+   :root {
+     --internal-only-text-color: #FF0000;
+     --internal-only-bg-color: rgba(255, 0, 0, 0.35);  /* 35% opacity - subtle */
+   }
+
+   /* Dark mode colors */
+   html.dark,
+   html[style*="color-scheme: dark"] {
+     --internal-only-text-color: #FF6666;
+     --internal-only-bg-color: rgba(255, 60, 60, 0.35);  /* 35% opacity - subtle */
+   }
+
+   /* For inline content and "Internal Only" label*/
+   .internal-text {
+     color: var(--internal-only-text-color);
+   }
+
+   /* For block-level content */
+   .internal-block {
+     background-color: var(--internal-only-bg-color);
+   }
+
+   /* Table cells transparent in dark mode to avoid stacking */
+   html.dark .internal-block table td,
+   html.dark .internal-block table th,
+   html[style*="color-scheme: dark"] .internal-block table td,
+   html[style*="color-scheme: dark"]   .internal-block table th   {
+     background-color: transparent !important;
+   }
+
+   /* Table cells with background in light mode only */
+   .internal-block table td,
+   .internal-block table th {
+     background-color: var(--internal-only-bg-color) !important;
+   }
+
+   /* Ensure other child elements don't add extra backgrounds */
+   .internal-block pre code,
+   .internal-block .fern-card p,
+   .internal-block [class*="card"] p {
+     background-color: transparent !important;
+   }
+
+   /* Make child elements transparent - they'll show the parent background */
+   .internal-block pre,
+   .internal-block .code-block,
+   .internal-block .fern-card,
+   .internal-block [class*="card"],
+   .internal-block .fern-frame,
+   .internal-block figure {
+     background-color: transparent !important;
+   }
+
+   /* Ensure ALL elements inside code blocks are transparent */
+   .internal-block pre,
+   .internal-block pre *,
+   .internal-block .code-block,
+   .internal-block .code-block *,
+   .internal-block .fern-card pre,
+   .internal-block .fern-card pre *,
+   .internal-block [class*="card"] pre,
+   .internal-block [class*="card"] pre * {
+     background-color: transparent !important;
+   }
+
+   /* Inline code (backticks) should show the parent background */
+   .internal-block code {
+     background-color: transparent !important;
    }
 }
