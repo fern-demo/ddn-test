@@ -21,6 +21,8 @@ navigation:
         contents:
           - page: Welcome
             path: docs/pages/welcome.mdx
+          - page: Welcome to Fern!
+            path: docs/pages/test-page/test.mdx
             icon: fa-duotone fa-house
           - page: Edit your docs
             path: docs/pages/editing-your-docs.mdx
