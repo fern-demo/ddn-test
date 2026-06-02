@@ -364,4 +364,568 @@
    .internal-block code {
      background-color: transparent !important;
    }
+
+   /* ====================================================
+      STYLES ADDED BY FERN FOR POC
+      ==================================================== */
+
+
+/* ===== SFA200NV Hardware Documentation Styles ===== */
+
+/* Main TOC Container */
+.toc-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* TOC Grid Layout */
+.toc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Section Cards */
+.toc-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.toc-section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  border-color: #0d6efd;
+}
+
+/* Section Headers */
+.toc-section h3 {
+  color: #0d6efd;
+  margin: 0 0 1rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e9ecef;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Section Icons */
+.toc-section h3::before {
+  content: "📁";
+  font-size: 1.1em;
+}
+
+.toc-section[data-section="overview"] h3::before { content: "📋"; }
+.toc-section[data-section="components"] h3::before { content: "🔧"; }
+.toc-section[data-section="installation"] h3::before { content: "⚙️"; }
+.toc-section[data-section="configuration"] h3::before { content: "🔧"; }
+.toc-section[data-section="monitoring"] h3::before { content: "📊"; }
+.toc-section[data-section="replacement"] h3::before { content: "🔄"; }
+.toc-section[data-section="power"] h3::before { content: "⚡"; }
+.toc-section[data-section="battery"] h3::before { content: "🔋"; }
+.toc-section[data-section="temperature"] h3::before { content: "🌡️"; }
+.toc-section[data-section="bmc"] h3::before { content: "🖥️"; }
+.toc-section[data-section="vm"] h3::before { content: "💻"; }
+.toc-section[data-section="support"] h3::before { content: "🆘"; }
+
+/* Link Lists */
+.toc-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.toc-section li {
+  margin-bottom: 0.5rem;
+}
+
+.toc-section a {
+  color: #495057;
+  text-decoration: none;
+  display: block;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.toc-section a::before {
+  content: "▸";
+  position: absolute;
+  left: 0.5rem;
+  color: #6c757d;
+  transition: all 0.2s ease;
+}
+
+.toc-section a:hover {
+  background-color: #e3f2fd;
+  color: #0d6efd;
+  transform: translateX(4px);
+}
+
+.toc-section a:hover::before {
+  color: #0d6efd;
+  transform: rotate(90deg);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .toc-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .toc-container {
+    padding: 1rem;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  .toc-section {
+    padding: 1rem;
+  }
+}
+
+/* Document Header Styles */
+.document-header {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.version-info {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #495057;
+  margin-bottom: 1.5rem;
+}
+
+.version-info .version {
+  font-weight: 600;
+  color: #0d6efd;
+}
+
+.version-info .doc-number,
+.version-info .revision {
+  font-weight: 500;
+}
+
+.product-variants {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.variant-group {
+  text-align: center;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.variant-group h4 {
+  color: #0d6efd;
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.variant {
+  font-family: 'Monaco', 'Menlo', monospace;
+  background: #f8f9fa;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.publish-date {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #495057;
+  margin-top: 1.5rem;
+}
+
+/* TOC Sections Styling */
+.toc-sections {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.toc-main-sections,
+.toc-appendices {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+  border: 1px solid #dee2e6;
+}
+
+.toc-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.toc-link {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+}
+
+.toc-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-color: #0d6efd;
+}
+
+.section-number {
+  background: #0d6efd;
+  color: white;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.section-title {
+  font-weight: 600;
+  color: #212529;
+  font-size: 1rem;
+}
+
+.section-desc {
+  font-size: 0.85rem;
+  color: #6c757d;
+  text-align: right;
+}
+
+/* Safety Guidelines */
+.safety-nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 8px;
+}
+
+.safety-category h4 {
+  color: #856404;
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+}
+
+.safety-category a {
+  color: #856404;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.safety-category a:hover {
+  text-decoration: underline;
+}
+
+.regulatory-section {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+}
+
+.regulatory-section h4 {
+  color: #0d6efd;
+  margin: 1.5rem 0 1rem 0;
+}
+
+.certification-logo {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+/* Safety Guidelines */
+.safety-guidelines {
+  margin: 1rem 0;
+}
+
+.safety-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  margin: 0.75rem 0;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  border-left: 4px solid #28a745;
+}
+
+.safety-item.critical {
+  background: #fff3cd;
+  border-color: #ffeaa7;
+  border-left-color: #ffc107;
+}
+
+.safety-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.safety-content strong {
+  color: #212529;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+/* Responsive Design for New Elements */
+@media (max-width: 768px) {
+  .document-header {
+    padding: 1.5rem;
+  }
+  
+  .product-variants {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .toc-sections {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .toc-link {
+    grid-template-columns: auto 1fr;
+    gap: 0.75rem;
+  }
+  
+  .section-desc {
+    display: none;
+  }
+  
+  .safety-nav {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .toc-section {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+  
+  .toc-section a {
+    color: #000 !important;
+  }
+  
+  .document-header,
+  .safety-guidelines,
+  .regulatory-section {
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+}
+
+  /*===== Center align table title (paragraph before table) ======*/
+  p:has(+ .fern-table-root) {
+    text-align: center;
+    font-weight: bold;
+  }
+/* ===== DDN Dashboard-Inspired Modern Styling ===== */
+
+   /* CSS Variables for consistent design tokens - Light Mode (default) */
+   :root {
+   --ddn-accent: #EE2737;
+   --ddn-border: #E5E7EB;
+   --ddn-surface: #FFFFFF;
+   --ddn-bg: #F9FAFB;
+   --ddn-text-primary: #0F172A;
+   --ddn-text-secondary: #475569;
+   --ddn-text-muted: #64748B;
+   --accent-tint: rgba(238, 39, 55, 0.04);
+   --accent-tint-strong: rgba(238, 39, 55, 0.08);
+   --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.1);
+   --shadow-md: 0 4px 6px -1px rgba(16, 24, 40, 0.1), 0 10px 15px -3px rgba(16, 24, 40, 0.1);
+   --shadow-lg: 0 10px 20px rgba(16, 24, 40, 0.12), 0 20px 25px -5px rgba(16, 24, 40, 0.1);
+   }
+
+   /* Dark Mode Overrides */
+   html.dark,
+   html[style*="color-scheme: dark"] {
+   --ddn-border: #243244;
+   --ddn-surface: #0F172A;
+   --ddn-bg: #0B1220;
+   --ddn-text-primary: #E2E8F0;
+   --ddn-text-secondary: #CBD5E1;
+   --ddn-text-muted: #94A3B8;
+   --accent-tint: rgba(238, 39, 55, 0.12);
+   --accent-tint-strong: rgba(238, 39, 55, 0.18);
+   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.5);
+   --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.45), 0 12px 20px rgba(0, 0, 0, 0.35);
+   --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.5), 0 20px 40px rgba(0, 0, 0, 0.4);
+   }
+
+   /* Fallback for system dark mode preference */
+   @media (prefers-color-scheme: dark) {
+      :root:not(.light) {
+         --ddn-border: #243244;
+         --ddn-surface: #0F172A;
+         --ddn-bg: #0B1220;
+         --ddn-text-primary: #E2E8F0;
+         --ddn-text-secondary: #CBD5E1;
+         --ddn-text-muted: #94A3B8;
+         --accent-tint: rgba(238, 39, 55, 0.12);
+         --accent-tint-strong: rgba(238, 39, 55, 0.18);
+      }
+   }
+
+   /* Clean background for entire site */
+   body {
+      background-color: var(--ddn-bg) !important;
+   }
+
+   /* Button Styling - Neutral with Accent on Hover */
+   /* Affects Ask AI and Login/Logout button (which may only matter on the POC site that has password login) */
+   .fern-button,
+   #fern-auth-button {
+      background: transparent !important;
+      color: var(--ddn-text-primary) !important;
+      border: 1.5px solid var(--ddn-border) !important;
+      border-radius: 9999px !important;
+      box-shadow: var(--shadow-sm) !important;
+      transition: all 0.2s ease !important;
+      font-weight: 500 !important;
+   }
+
+   .fern-button:hover,
+   .fern-button:focus-visible,
+   #fern-auth-button:hover,
+   #fern-auth-button:focus-visible {
+      border-color: var(--ddn-accent) !important;
+      background: var(--accent-tint) !important;
+      box-shadow: var(--shadow-md) !important;
+      transform: translateY(-1px) !important;
+   }
+
+   /* Keep page action buttons neutral – remove global border/shadow/hover */
+   .fern-page-actions .fern-button {
+      border: none !important;
+      box-shadow: none !important;
+      background: transparent !important;
+      color: inherit !important;
+      transform: none !important;
+   }
+
+   .fern-page-actions .fern-button:hover,
+   .fern-page-actions .fern-button:focus-visible {
+      border: none !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      transform: none !important;
+   }
+
+   /* Respect grouped radius utilities overridden by global pill radius */
+   .fern-page-actions .fern-button.rounded-l-none {
+      border-top-left-radius: 0 !important;
+      border-bottom-left-radius: 0 !important;
+   }
+
+   .fern-page-actions .fern-button.rounded-r-none {
+      border-top-right-radius: 0 !important;
+      border-bottom-right-radius: 0 !important;
+   }
+
+   /* Header Styling */
+   .fern-header-content {
+      background: var(--ddn-surface) !important;
+      border-bottom: 1px solid var(--ddn-border) !important;
+      box-shadow: 0 1px 3px rgba(16, 24, 40, 0.04) !important;
+      backdrop-filter: blur(8px) !important;
+   }
+
+
+   /* Ensure search and AI buttons are always visible (fix hydration timing issue) */
+   #fern-search-button,
+   #fern-ask-ai-button,
+   button[aria-label="Search"] {
+      opacity: 1 !important;
+      visibility: visible !important;
+      display: inline-flex !important;
+      pointer-events: auto !important;
+   }
+
+   /* Navigation Links with Accent on Hover */
+   /* Code inspection shows this aria-label used in the header, so it might be for tabs? which we don't have */
+   nav[aria-label="Navbar links"] a {
+      border: 1px solid transparent !important;
+      border-radius: 9999px !important;
+      padding: 0.5rem 1rem !important;
+      transition: all 0.2s ease !important;
+      font-weight: 500 !important;
+   }
+
+   nav[aria-label="Navbar links"] a:hover,
+   nav[aria-label="Navbar links"] a:focus-visible {
+      border-color: var(--ddn-accent) !important;
+      background: var(--accent-tint) !important;
+      color: var(--ddn-accent) !important;
+   }
+
+   /* Link Hover States */
+   a {
+      transition: color 0.15s ease !important;
+   }
+
+}
+
+/* Disable ONLY our custom layer for Ask AI button and search bar */
+@supports (all: revert-layer) 
+{
+   .fern-header-content #fern-ask-ai-button,
+   .fern-header-content #fern-search-button,
+   .fern-header-content button[aria-label="Search"],
+   .fern-header-content button[aria-label="Ask AI"] {
+      all: revert-layer !important;
+   }
+
+   /* Add proper padding to Ask AI button */
+   .fern-header-content #fern-ask-ai-button,
+   .fern-header-content button[aria-label="Ask AI"] {
+      padding-inline-start: 1rem !important;
+      padding-inline-end: 1rem !important;
+   }  
 }

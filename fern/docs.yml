@@ -7,16 +7,10 @@ ai-search:
 title: Fern Docs Starter
 layout:
   searchbar-placement: header
-  page-width: full
-  tabs-placement: header
+  content-width: 54rem
+  sidebar-width: 20rem
 css: styles.css
-tabs:
-  home:
-    display-name: Docs
-    icon: home
 navigation:
-  - tab: home
-    layout:
       - section: Get started
         contents:
           - page: Welcome
@@ -63,28 +57,29 @@ navigation:
       - section: Changelog
         contents:
           - changelog: docs/changelog
+      - section: Legal
+        contents:
+          - page: Copyright Information
+            path: docs/pages/copyright-information.mdx
+            hidden: true
 navbar-links:
-  - type: minimal
-    text: Fork this repo
-    url: https://github.com/fern-api/docs-starter
   - type: filled
-    text: Dashboard
-    url: https://dashboard.buildwithfern.com
-  - type: github
-    value: https://github.com/fern-apidocs/fern
+    text: Contact DDN Support
+    icon: fa-duotone fa-headset
+    href: https://internal-docs.ddn.io/infinia/release-notes/contacting-ddn-support
 colors:
-  accentPrimary:
-    dark: '#c01d2e'
-    light: '#c01d2e'
-theme:
-  page-actions: toolbar
-  footer-nav: minimal
+  accent-primary: "#D71612"
+  background:
+    dark: "#1A1B1D"
+    light: "#FFFFFF"
 logo:
   dark: docs/assets/logo.png
   light: docs/assets/logo.png
-  height: 20
+  height: 50
+  href: /
 favicon: docs/assets/favicon.png
 footer: ./components/CustomFooter.tsx
 experimental:
   mdx-components:
     - ./components
+
