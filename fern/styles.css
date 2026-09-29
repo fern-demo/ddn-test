@@ -918,13 +918,13 @@
    .fern-header-content #fern-ask-ai-button,
    .fern-header-content #fern-search-button,
    .fern-header-content button[aria-label="Search"],
-   .fern-header-content button[aria-label="Ask AI"] {
+   .fern-header-content button[aria-label="DDN Docs ChatBot"] {
       all: revert-layer !important;
    }
 
    /* Add proper padding to Ask AI button */
    .fern-header-content #fern-ask-ai-button,
-   .fern-header-content button[aria-label="Ask AI"] {
+   .fern-header-content button[aria-label="DDN Docs ChatBot"] {
       padding-inline-start: 1rem !important;
       padding-inline-end: 1rem !important;
    }  
