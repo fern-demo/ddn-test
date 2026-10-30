@@ -932,4 +932,4 @@
 
 /* Workaround to replace the Ask AI button text */
 #fern-ask-ai-button .fern-button-text { font-size: 0; }
-#fern-ask-ai-button .fern-button-text::after { content: "New Ask AI Text"; font-size: 14px; }
+#fern-ask-ai-button .fern-button-text::after { content: "Ask DDN Docs"; font-size: 14px; }
