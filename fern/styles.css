@@ -927,5 +927,9 @@
    .fern-header-content button[aria-label="DDN Docs ChatBot"] {
       padding-inline-start: 1rem !important;
       padding-inline-end: 1rem !important;
-   }  
+   }
 }
+
+/* Workaround to replace the Ask AI button text */
+#fern-ask-ai-button .fern-button-text { font-size: 0; }
+#fern-ask-ai-button .fern-button-text::after { content: "New Ask AI Text"; font-size: 14px; }
