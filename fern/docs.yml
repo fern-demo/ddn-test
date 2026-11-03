@@ -33,7 +33,8 @@ navigation:
             icon: fa-duotone fa-sitemap
           - page: Customize your docs
             path: docs/pages/customization.mdx
-            icon: fa-duotone fa-palette
+          - page: Keycloak Integration Guide
+            path: docs/pages/keycloak-integration-guide.mdx
           - page: API reference
             path: docs/pages/api-reference-overview.mdx
             icon: fa-duotone fa-code

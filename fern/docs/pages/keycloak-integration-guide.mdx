@@ -1,0 +1,519 @@
+---
+title: Keycloak Integration Guide
+slug: keycloak-integration-guide
+---
+
+# Keycloak Integration Guide
+
+# Keycloak Integration Guide
+
+This guide provides step-by-step instructions for setting up Keycloak
+with Docker and configuring it for RED integration.
+
+## Prerequisites
+
+- Docker installed and running
+
+- Appropriate permissions to create directories and run Docker commands
+
+- jq installed for JSON parsing
+
+## Configuration Variables
+
+Set these environment variables before starting the setup:
+
+```bash
+# Keycloak Configuration
+KEYCLOAK_HOST="salil-redvm-build.virts.dev1.redlab.datadirectnet.com"
+KEYCLOAK_URL="https://${KEYCLOAK_HOST}:8443"
+REALM="myrealm"
+
+# User Configuration
+USERNAME="john.doe"
+USER_EMAIL="john@example.com"
+USER_FIRST_NAME="John"
+USER_LAST_NAME="Doe"
+USER_PASSWORD="SecurePass123!"
+
+# Group Configuration
+GROUP_NAME="redadmin"
+
+# Client Configuration
+OIDC_CLIENT_ID="red-oidc-client"
+ADMIN_CLIENT_ID="admin-service-client"
+```
+
+## 1. Setup Directories and Certificates
+
+### Create required directories
+
+```bash
+mkdir -p /work/keycloak/keycloak-data
+mkdir -p /work/keycloak/certs
+```
+
+### Generate self-signed SSL certificates
+
+```bash
+cd /work/keycloak/certs
+
+openssl req -x509 -newkey rsa:4096 -sha256 -days 3650 -nodes \
+  -keyout server.key.pem \
+  -out server.crt.pem \
+  -subj "/CN=${KEYCLOAK_HOST}" \
+  -addext "subjectAltName=DNS:${KEYCLOAK_HOST},DNS:localhost,IP:127.0.0.1"
+```
+
+### Set appropriate permissions
+
+```bash
+chown -R cloud-user:root /work/keycloak
+```
+
+## 2. Start Keycloak Container
+
+```bash
+docker run -d \
+  -p 8443:8443 \
+  -p 8081:8080 \
+  -e KC_BOOTSTRAP_ADMIN_USERNAME=admin \
+  -e KC_BOOTSTRAP_ADMIN_PASSWORD=admin123 \
+  -e KC_HTTPS_CERTIFICATE_FILE=/opt/keycloak/conf/server.crt.pem \
+  -e KC_HTTPS_CERTIFICATE_KEY_FILE=/opt/keycloak/conf/server.key.pem \
+  -v ./keycloak-data:/opt/keycloak/data:z \
+  -v ./certs:/opt/keycloak/conf:z \
+  --name keycloak \
+  quay.io/keycloak/keycloak:26.5.7 start-dev
+```
+
+## 3. Configure Keycloak via CLI
+
+**Note:** All of these steps can be done via the Keycloak UI, but this
+guide uses the CLI for automation.
+
+### Login to Keycloak Admin CLI
+
+```bash
+docker exec -it keycloak /opt/keycloak/bin/kcadm.sh config credentials \
+  --server http://localhost:8080 \
+  --realm master \
+  --user admin \
+  --password admin123
+```
+
+### Create a new realm
+
+```bash
+docker exec -it keycloak /opt/keycloak/bin/kcadm.sh create realms \
+  -s realm=${REALM} \
+  -s enabled=true \
+  -s displayName="My Realm" \
+  -s bruteForceProtected=true
+```
+
+## 4. Create Users and Groups
+
+### Create a user
+
+```bash
+docker exec -it keycloak /opt/keycloak/bin/kcadm.sh create users \
+  -r ${REALM} \
+  -s username=${USERNAME} \
+  -s email=${USER_EMAIL} \
+  -s emailVerified=true \
+  -s enabled=true \
+  -s firstName=${USER_FIRST_NAME} \
+  -s lastName=${USER_LAST_NAME}
+```
+
+### Set user password
+
+```bash
+docker exec -it keycloak /opt/keycloak/bin/kcadm.sh set-password \
+  -r ${REALM} \
+  --username ${USERNAME} \
+  --new-password "${USER_PASSWORD}"
+```
+
+### Create a group
+
+```bash
+docker exec -it keycloak /opt/keycloak/bin/kcadm.sh create groups \
+  -r ${REALM} \
+  -s name=${GROUP_NAME}
+```
+
+### Add user to the group
+
+```bash
+# Get group ID
+GROUP_ID=$(docker exec -it keycloak /opt/keycloak/bin/kcadm.sh \
+  get groups -r ${REALM} -q name=${GROUP_NAME} \
+  --fields id --format csv --noquotes | tr -d '\r')
+
+# Get user ID
+USER_ID=$(docker exec -it keycloak /opt/keycloak/bin/kcadm.sh \
+  get users -r ${REALM} -q username=${USERNAME} \
+  --fields id --format csv --noquotes | tr -d '\r')
+
+docker exec -it keycloak /opt/keycloak/bin/kcadm.sh \
+  update users/$USER_ID/groups/$GROUP_ID -r ${REALM}
+```
+
+## 5. Create OIDC Client
+
+### Create the main RED OIDC client
+
+```bash
+docker exec -i keycloak /opt/keycloak/bin/kcadm.sh create clients \
+  -r ${REALM} -f - << EOF
+{
+  "clientId": "${OIDC_CLIENT_ID}",
+  "enabled": true,
+  "protocol": "openid-connect",
+  "publicClient": false,
+  "standardFlowEnabled": false,
+  "directAccessGrantsEnabled": false,
+  "attributes": {
+    "oauth2.device.authorization.grant.enabled": "true"
+  }
+}
+EOF
+```
+
+### Get the client ID
+
+```bash
+CID=$(docker exec -i keycloak /opt/keycloak/bin/kcadm.sh \
+  get clients -r ${REALM} -q clientId=${OIDC_CLIENT_ID} \
+  --fields id --format csv --noquotes | tr -d '\r')
+```
+
+### Create protocol mapper for groups
+
+```bash
+docker exec -i keycloak /opt/keycloak/bin/kcadm.sh \
+  create clients/$CID/protocol-mappers/models -r ${REALM} -f - << EOF
+{
+  "name": "groups-mapper",
+  "protocol": "openid-connect",
+  "protocolMapper": "oidc-group-membership-mapper",
+  "config": {
+    "full.path": "false",
+    "id.token.claim": "true",
+    "access.token.claim": "true",
+    "userinfo.token.claim": "true",
+    "claim.name": "groups",
+    "multivalued": "true"
+  }
+}
+EOF
+```
+
+### Get the client secret
+
+```bash
+CLIENT_SECRET=$(docker exec -i keycloak /opt/keycloak/bin/kcadm.sh \
+  get clients/$CID/client-secret -r ${REALM} \
+  --fields value --format csv --noquotes | tr -d '\r')
+```
+
+## 6. Create Admin Service Client
+
+### Create the admin service client
+
+```bash
+docker exec -i keycloak /opt/keycloak/bin/kcadm.sh create clients \
+  -r ${REALM} -f - << EOF
+{
+  "clientId": "${ADMIN_CLIENT_ID}",
+  "enabled": true,
+  "protocol": "openid-connect",
+  "publicClient": false,
+  "standardFlowEnabled": false,
+  "directAccessGrantsEnabled": false,
+  "serviceAccountsEnabled": true
+}
+EOF
+```
+
+### Add required roles to the service account
+
+```bash
+docker exec -i keycloak /opt/keycloak/bin/kcadm.sh add-roles \
+  -r ${REALM} \
+  --uusername service-account-${ADMIN_CLIENT_ID} \
+  --cclientid realm-management \
+  --rolename view-users \
+  --rolename query-users \
+  --rolename view-realm \
+  --rolename query-groups
+```
+
+### Get admin client credentials
+
+```bash
+# Get admin client ID
+ADMIN_CID=$(docker exec -i keycloak /opt/keycloak/bin/kcadm.sh \
+  get clients -r ${REALM} -q clientId=${ADMIN_CLIENT_ID} \
+  --fields id --format csv --noquotes | tr -d '\r')
+
+# Get admin client secret
+ADMIN_CLIENT_SECRET=$(docker exec -i keycloak /opt/keycloak/bin/kcadm.sh \
+  get clients/$ADMIN_CID/client-secret -r ${REALM} \
+  --fields value --format csv --noquotes | tr -d '\r')
+```
+
+## 7. Generate Keycloak Configuration File
+
+Create the YAML configuration file to be used with RED identity integration:
+
+```bash
+cat > /scratch/$USER/work/keycloak.yaml << EOF
+keycloak_url: ${KEYCLOAK_URL}
+realm: ${REALM}
+client_id: ${OIDC_CLIENT_ID}
+client_secret: ${CLIENT_SECRET}
+admin_client_id: ${ADMIN_CLIENT_ID}
+admin_client_secret: ${ADMIN_CLIENT_SECRET}
+insecure_skip_verify: true
+EOF
+```
+
+## 8. Verify Token Contains Group Information
+
+After setting up Keycloak, verify that the user token includes the group
+name by testing the device authorization flow.
+
+### Initiate device authorization
+
+```bash
+# Request device code
+RESPONSE=$(curl -k -X POST \
+  ${KEYCLOAK_URL}/realms/${REALM}/protocol/openid-connect/auth/device \
+  -d "client_id=${OIDC_CLIENT_ID}" \
+  -d "client_secret=${CLIENT_SECRET}" \
+  -H "Content-Type: application/x-www-form-urlencoded")
+
+# Extract device code and verification URI
+DEVICE_CODE=$(echo $RESPONSE | jq -r '.device_code')
+VERIFICATION_URI_COMPLETE=$(echo $RESPONSE | jq -r '.verification_uri_complete')
+
+# Display instructions to user
+echo "Device Code: ${DEVICE_CODE}"
+echo ""
+echo "Please open the following URL in your browser to authenticate:"
+echo "${VERIFICATION_URI_COMPLETE}"
+echo ""
+echo "After granting permission, press Enter to continue..."
+read
+```
+
+### Exchange device code for access token
+
+After the user has authenticated and granted permission in the browser:
+
+```bash
+# Exchange device code for tokens
+TOKEN_RESPONSE=$(curl -k -X POST \
+  ${KEYCLOAK_URL}/realms/${REALM}/protocol/openid-connect/token \
+  -d "grant_type=urn:ietf:params:oauth:grant-type:device_code" \
+  -d "client_id=${OIDC_CLIENT_ID}" \
+  -d "client_secret=${CLIENT_SECRET}" \
+  -d "device_code=${DEVICE_CODE}")
+
+# Extract and decode access token
+ACCESS_TOKEN=$(echo $TOKEN_RESPONSE | jq -r '.access_token')
+
+# Decode the JWT token to view claims (including groups)
+echo "Access Token Claims:"
+echo $ACCESS_TOKEN | cut -d'.' -f2 | base64 -d 2>/dev/null | jq .
+
+# Specifically check for groups claim
+echo ""
+echo "Groups in token:"
+echo $ACCESS_TOKEN | cut -d'.' -f2 | base64 -d 2>/dev/null | jq -r '.groups[]'
+```
+
+The output should show the ${GROUP_NAME} group in the token claims,
+confirming that group information is properly included in the user's
+access token.
+
+## Configuration Summary
+
+After completing these steps, you will have:
+
+- **Keycloak instance** running on ports 8443 (HTTPS) and 8081 (HTTP)
+
+- **Realm**: \${REALM}
+
+- **User**: \${USERNAME} with password \${USER_PASSWORD}
+
+- **Group**: \${GROUP_NAME}
+
+- **OIDC Client**: \${OIDC_CLIENT_ID} with device authorization grant
+  enabled
+
+- **Admin Service Client**: \${ADMIN_CLIENT_ID} with realm management
+  permissions
+
+- **Configuration file**: /scratch/\$USER/work/keycloak.yaml ready for
+  RED integration
+
+## 9. Integrate with RED Cluster
+
+Now that Keycloak is configured, integrate it with your RED cluster
+using redcli.
+
+### Create Identity Provider
+
+Register the Keycloak realm as an identity provider in RED:
+
+```bash
+redcli identity create ${REALM} keycloak -t ${TENANT} -f /scratch/$USER/work/keycloak.yaml
+```
+
+**Example:**
+
+```bash
+redcli identity create tenant1realm keycloak -t tenant1 -f /scratch/sgokhale/work/tenant1-keycloak.yaml
+```
+
+This registers the Keycloak realm tenant1realm as an identity provider
+for tenant tenant1.
+
+### Create Group in RED
+
+Create a group in RED that corresponds to the Keycloak group:
+
+```bash
+redcli user group add ${TENANT}_admin -t ${TENANT} -r ${TENANT}
+```
+
+**Example:**
+
+```bash
+redcli user group add tenant1_admin -t tenant1 -r tenant1
+```
+
+This creates a group called tenant1_admin in the tenant tenant1 with
+realm scope.
+
+### Add Group Mapping
+
+Map the RED group to the Keycloak group so that users from Keycloak
+inherit the correct permissions:
+
+```bash
+redcli identity mapping add ${REALM} ${TENANT}_admin -f ${GROUP_NAME} -t ${TENANT}
+```
+
+**Example:**
+
+```bash
+redcli identity mapping add tenant1realm tenant1_admin -f redadmin -t tenant1
+```
+
+This maps the Keycloak group redadmin to the RED group tenant1_admin for
+users authenticating through tenant1realm.
+
+### Test User Login
+
+Test the integration by logging in a user through the Keycloak identity
+provider:
+
+```bash
+redcli user login ${USERNAME}@${TENANT}.com -t ${TENANT} -i ${REALM}
+```
+
+**Example:**
+
+```bash
+redcli user login user1@tenant1.com -t tenant1 -i tenant1realm
+```
+
+**Expected output:**
+
+Verify your access through this URL:
+https://salil-redvm-build.virts.dev1.redlab.datadirectnet.com:8443/realms/tenant1/device?user_code=POLI-SHZY
+within 600 seconds and press ENTER
+
+**Steps:**
+
+1.  Open the verification URL in your browser
+
+2.  Authenticate with the user credentials (username: \${USERNAME},
+    password: \${USER_PASSWORD})
+
+3.  Approve the grant request
+
+4.  Return to the terminal and press ENTER
+
+**Success message:**
+
+3:17PM INF User \"user1@tenant1.com\" logged in successfully.
+
+### Verify User Access
+
+List all users to verify the user has been created with the correct
+group membership:
+
+```bash
+redcli user list
+```
+
+**Expected output:**
+
+3:18PM INF Set limit to 25.
+
+┌───────────────────┬──────────────┬──────────────┬────────────┬───────────────────┬───────────────┐
+
+│ USER_ID │ IDENTITY │ ACCESS SCOPE │ FULL NAME │ EMAIL │ GROUPS │
+
+├───────────────────┼──────────────┼──────────────┼────────────┼───────────────────┼───────────────┤
+
+│ tenant1admin │ red │ tenant1 │ │ │ │
+
+├───────────────────┼──────────────┼──────────────┼────────────┼───────────────────┼───────────────┤
+
+│ user1@tenant1.com │ tenant1realm │ tenant1 │ User1 Test │
+user1@tenant1.com │ tenant1_admin │
+
+└───────────────────┴──────────────┴──────────────┴────────────┴───────────────────┴───────────────┘
+
+**Verify:**
+
+- User user1@tenant1.com is listed
+
+- Identity shows tenant1realm (the Keycloak identity provider)
+
+- Groups column shows tenant1_admin (inherited from Keycloak group
+  mapping)
+
+- Access scope is tenant1
+
+## Summary
+
+You have successfully:
+
+1.  ✅ Set up Keycloak with SSL certificates
+
+2.  ✅ Created a realm with a user and group
+
+3.  ✅ Configured OIDC client with device authorization
+
+4.  ✅ Set up admin service client for RED integration
+
+5.  ✅ Verified token contains group information
+
+6.  ✅ Integrated Keycloak with RED cluster
+
+7.  ✅ Created group mappings between Keycloak and RED
+
+8.  ✅ Successfully authenticated a user through Keycloak
+
+9.  ✅ Verified user permissions and group membership in RED
+
+Users can now authenticate to RED using their Keycloak credentials, and
+their group memberships from Keycloak are automatically mapped to RED
+groups for authorization.
